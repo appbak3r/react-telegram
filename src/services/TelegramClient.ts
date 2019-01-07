@@ -50,6 +50,10 @@ class TDLib {
     };
     
     this.create();
+    
+    this.tdFunctions.td_set_verbosity(2);
+    
+    this.loopReceive();
   }
   
   execute (message: any) {
@@ -61,7 +65,26 @@ class TDLib {
   }
   
   receive () {
-    return JSON.parse(this.tdFunctions.td_receive(this.client));
+    const result = this.tdFunctions.td_receive(this.client);
+    
+    return result ? JSON.parse(result) : null;
+  }
+  
+  private loopReceive (): void {
+    const result = this.receive();
+    
+    if (!result) {
+      setTimeout(() => {
+        this.loopReceive();
+      }, 100);
+    } else {
+      console.log('received', result);
+      
+      
+      postMessage(result);
+      
+      this.loopReceive();
+    }
   }
   
   private create () {
@@ -70,7 +93,6 @@ class TDLib {
   
 }
 
-// @ts-ignore
 importScripts('/td_wasm/td_wasm.js');
 
 const createClient = (options: any): any => {
@@ -91,12 +113,62 @@ const createClient = (options: any): any => {
       self.Module().then((module: any) => {
         const tdlib = new TDLib(module);
         
-        tdlib.execute({
-          '@type': 'getTextEntities',
-          text: 'ping',
-        });
         
-        console.log('receive', tdlib.receive());
+        self.onmessage = (message) => {
+          switch (message.data.type) {
+            case 'phone': {
+              tdlib.send({
+                '@type': 'setAuthenticationPhoneNumber',
+                phone_number: message.data.phone,
+              });
+              
+              break;
+              
+            }
+            
+            case 'code': {
+              tdlib.send({
+                '@type': 'checkAuthenticationCode',
+                code: message.data.code,
+              });
+              
+              break;
+              
+            }
+            
+            case 'password': {
+              tdlib.send({
+                '@type': 'checkAuthenticationPassword',
+                password: message.data.password,
+              });
+              
+              break;
+            }
+            
+            case 'message': {
+              tdlib.send(
+                {
+                  '@type': 'sendMessage',
+                  'chat_id': 'chat-id', // TODO: replace with real chat id
+                  'input_message_content': {
+                    '@type': 'inputMessageText',
+                    'text': {
+                      '@type': 'formattedText',
+                      'text': 'hi how are you?'
+                    }
+                  }
+                });
+            }
+            
+            default: {
+            }
+          }
+          
+          tdlib.send({
+            '@type': 'setAuthenticationPhoneNumber',
+            phone_number: message.data.phone,
+          });
+        };
         
         tdlib.send({
           '@type': 'setTdlibParameters',
@@ -115,9 +187,10 @@ const createClient = (options: any): any => {
             enable_storage_optimizer: true,
           }
         });
-  
-        console.log('receive', tdlib.receive());
-  
+        
+        
+        tdlib.send({ '@type': 'checkDatabaseEncryptionKey' });
+        
         // @ts-ignore
         
         // resolve(Client.fromTDLib(tdlib));

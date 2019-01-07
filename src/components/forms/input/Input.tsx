@@ -11,7 +11,7 @@ type InputProps = {
 
 export class Input extends PureComponent<InputProps> {
   render (): React.ReactNode {
-    const { name, errorMessage, validate } = this.props;
+    const { name, errorMessage, validate, ...restProps } = this.props;
     
     return (
       <Field name={ name }
@@ -22,6 +22,7 @@ export class Input extends PureComponent<InputProps> {
           return (
             <div className='rt-input'>
               <input { ...input }
+                     { ...restProps }
                      className='rt-input__input'/>
               
               { hasError && (
