@@ -1,5 +1,3 @@
-import { Client } from 'tdl';
-import { TDLib} from 'tdl-tdlib-wasm';
 import fs from 'fs';
 // class TDLibClient {
 //   private readonly client: any;
@@ -36,6 +34,42 @@ import fs from 'fs';
 //
 // }
 
+
+class TDLib {
+  private tdFunctions: any;
+  private client: any;
+  
+  constructor (tdWasm: any) {
+    this.tdFunctions = {
+      td_create: tdWasm.cwrap('td_create', 'number', []),
+      td_destroy: tdWasm.cwrap('td_destroy', null, ['number']),
+      td_send: tdWasm.cwrap('td_send', null, ['number', 'string']),
+      td_execute: tdWasm.cwrap('td_execute', null, ['number', 'string']),
+      td_receive: tdWasm.cwrap('td_receive', 'string', ['number']),
+      td_set_verbosity: tdWasm.cwrap('td_set_verbosity', null, ['number'])
+    };
+    
+    this.create();
+  }
+  
+  execute (message: any) {
+    this.tdFunctions.td_execute(this.client, JSON.stringify(message));
+  }
+  
+  send (message: any) {
+    this.tdFunctions.td_send(this.client, JSON.stringify(message));
+  }
+  
+  receive () {
+    return JSON.parse(this.tdFunctions.td_receive(this.client));
+  }
+  
+  private create () {
+    this.client = this.tdFunctions.td_create();
+  }
+  
+}
+
 // @ts-ignore
 importScripts('/td_wasm/td_wasm.js');
 
@@ -47,16 +81,45 @@ const createClient = (options: any): any => {
         storeName: 'react-telegram',
       }
     }, () => {
+      try {
+        fs.mkdirSync('/tdlib');
+      } catch {
+        console.log('/tdlib already exists');
+      }
+      
       // @ts-ignore
       self.Module().then((module: any) => {
         const tdlib = new TDLib(module);
         
+        tdlib.execute({
+          '@type': 'getTextEntities',
+          text: 'ping',
+        });
+        
+        console.log('receive', tdlib.receive());
+        
+        tdlib.send({
+          '@type': 'setTdlibParameters',
+          parameters: {
+            use_test_dc: true,
+            database_directory: '/tdlib',
+            files_directory: '/tdlib',
+            use_file_database: true,
+            use_message_database: true,
+            api_id: options.apiId,
+            api_hash: options.apiHash,
+            system_language_code: 'en',
+            device_model: navigator.appVersion,
+            system_version: navigator.appVersion,
+            application_version: navigator.appName,
+            enable_storage_optimizer: true,
+          }
+        });
+  
+        console.log('receive', tdlib.receive());
+  
         // @ts-ignore
-       module._td_execute(JSON.stringify({
-         '@type': 'getTextEntities',
-         text: 'ping',
-       }));
-    
+        
         // resolve(Client.fromTDLib(tdlib));
       });
     });
