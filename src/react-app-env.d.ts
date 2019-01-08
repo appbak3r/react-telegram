@@ -63,15 +63,5 @@ declare module '*.module.sass' {
   export default classes;
 }
 
-declare global {
-  interface Window {
-    Module: any;
-  }
-  
-  interface self {
-    Module: any
-  }
-}
-
 declare const BrowserFS;
 

@@ -1,25 +1,41 @@
-import { TelegramClient } from './TelegramClient';
+import fs from 'fs';
 
-TelegramClient.then((client: any) => {
-  console.log(client);
-  
-  client.execute({
-    type: 'getTextEntities',
-    options: {
-      text: '@telegram /test_command https://telegram.org telegram.me',
-    }
-  });
-  
-  client.send({
-    type: 'getAuthorizationState',
-  });
-  
+import { environment } from '../config/environment';
+
+import { TELEGRAM_CLIENT_RECEIVE, TelegramClient } from './TelegramClient';
+
+importScripts('/td_wasm/td_wasm.js');
+
+/**
+ * fs is patched to support browser
+ */
+BrowserFS.configure({
+  fs: 'IndexedDB',
+  options: {
+    storeName: 'react-telegram',
+  }
+}, () => {
   try {
-    client.receive().then((arg: any) => {
-      console.log(arg);
-    })
+    fs.mkdirSync('/tdlib');
   } catch {
-    console.log('error');
+    console.log('/tdlib already exists');
   }
   
+  /**
+   * TDLib WASM loader
+   */
+  (self as any).Module().then((tdWASM: any) => {
+    const telegramClient = new TelegramClient(tdWASM, {
+      apiId: environment.apiId,
+      apiHash: environment.apiHash,
+    });
+    
+    telegramClient.addListener(TELEGRAM_CLIENT_RECEIVE, (message: any) => {
+      postMessage(message);
+    });
+    
+    self.onmessage = (action) => {
+      telegramClient.sendAction(action);
+    };
+  });
 });
