@@ -1,9 +1,18 @@
-interface Environment {
+import { environmentDefault } from './environmentDefault';
+import { environmentProduction } from './environmentProduction';
+
+export interface IEnvironment {
   apiId: string;
   apiHash: string;
+  isLoggerEnabled: boolean;
 }
 
-export const environment: Environment = {
-  apiId: process.env.REACT_APP_TELEGRAM_API_ID || '',
-  apiHash: process.env.REACT_APP_TELEGRAM_API_HASH || '',
+export let environment: IEnvironment = {
+  ...environmentDefault,
 };
+
+if (process.env.NODE_ENV === 'production') {
+  environment = {
+    ...environmentProduction,
+  };
+}

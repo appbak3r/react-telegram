@@ -51,6 +51,11 @@
     "react-dev-utils": "^7.0.1",
     "react-dom": "^16.7.0",
     "react-final-form": "^4.0.2",
+    "react-redux": "^6.0.0",
+    "redux": "^4.0.1",
+    "redux-logger": "^3.0.6",
+    "redux-saga": "^0.16.2",
+    "redux-thunk": "^2.3.0",
     "resolve": "1.8.1",
     "sass-loader": "7.1.0",
     "style-loader": "0.23.0",
@@ -79,6 +84,8 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@types/react-redux": "^6.0.12",
+    "@types/redux-logger": "^3.0.6",
     "node-sass": "^4.11.0",
     "worker-loader": "^2.0.0"
   },
