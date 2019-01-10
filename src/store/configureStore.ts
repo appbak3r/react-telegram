@@ -16,7 +16,11 @@ const logger = createLogger({
 const sagaMiddleware = createSagaMiddleware();
 
 export const configureStore = (preloadedState = {}) => {
-  const store = createStore(rootReducer, preloadedState, applyMiddleware(thunk, logger, sagaMiddleware));
+  const store = createStore(
+    rootReducer,
+    preloadedState,
+    applyMiddleware(thunk, logger, sagaMiddleware)
+  );
   
   sagaMiddleware.run(rootSaga);
   

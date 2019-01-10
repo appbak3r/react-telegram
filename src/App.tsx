@@ -2,35 +2,20 @@ import React, { PureComponent } from 'react';
 import { Form } from 'react-final-form';
 
 import { Input } from './components/forms/input/Input';
+import { connect } from './store/connect';
+import { bindActionCreators } from 'redux';
+import { sendMessage, TelegramActions } from './store/actions/telegramActions';
 
-const TelegramWorker = require('./services/telegram.worker');
+type AppOwnProps = {};
 
-const worker = new TelegramWorker();
-
-
-export class App extends PureComponent {
+@connect<{}, TelegramActions, AppOwnProps>(null, mapDispatchToProps)
+class AppComponent extends PureComponent<TelegramActions & AppOwnProps> {
   state: any = {
     messages: [],
   };
   
-  componentDidMount () {
-    worker.addEventListener('message', this.addMessage);
-  }
-  
-  addMessage = (message: any) => {
-    const messages = [...this.state.messages, message.data];
-    
-    this.setState({
-      messages,
-    });
-  };
-  
-  componentWillUnmount () {
-    worker.removeEventListener('message', this.addMessage);
-  }
-  
   onSubmit = (values: any) => {
-    worker.postMessage(values);
+    this.props.sendMessage();
   };
   
   render (): React.ReactNode {
@@ -58,4 +43,10 @@ export class App extends PureComponent {
       </div>
     );
   }
+}
+
+export const App: React.ComponentClass<AppOwnProps> = AppComponent as any;
+
+function mapDispatchToProps (dispatch: any) {
+  return bindActionCreators({ sendMessage }, dispatch);
 }

@@ -34,8 +34,20 @@ BrowserFS.configure({
       postMessage(message);
     });
     
-    self.onmessage = (action) => {
-      telegramClient.sendAction(action);
+    self.onmessage = (event) => {
+      const action = event.data;
+      
+      switch(action.type) {
+        case 'send': {
+          telegramClient.send(action.payload);
+          
+          break;
+        }
+        
+        default: {
+          console.log('telegram worker: unknown action');
+        }
+      }
     };
   });
 });

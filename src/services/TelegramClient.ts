@@ -84,11 +84,6 @@ export class TelegramClient {
     this.eventEmitter.removeListener(eventName, callback, context);
   }
   
-  // TODO: describe actions
-  sendAction (action: any): void {
-  
-  }
-  
   private loopReceive (): void {
     const result = this.receive();
     
