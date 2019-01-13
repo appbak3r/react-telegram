@@ -5,18 +5,25 @@ import { RootState } from '../../../store/reducers/rootReducer';
 import { AppState } from '../../../store/reducers/appReducer';
 
 import { LoginForm } from '../../auth/login-form/LoginForm';
+import { TelegramActions, sendMessage } from '../../../store/actions/telegramActions';
+import { bindActionCreators } from 'redux';
 
-@connect<AppState>(mapStateToProps)
-class LoginWrapper extends Component<AppState> {
+@connect<AppState, TelegramActions>(mapStateToProps, mapDispatchToProps)
+class LoginWrapper extends Component<AppState & TelegramActions> {
   render () {
-    const { authState } = this.props;
+    const { authState, sendMessage } = this.props;
     
     return (
       <div className='rt-login'>
-        <LoginForm state={ authState }/>
+        <LoginForm state={ authState }
+                   onSubmit={ sendMessage }/>
       </div>
     );
   }
+}
+
+function mapDispatchToProps (dispatch: any) {
+  return bindActionCreators({ sendMessage }, dispatch);
 }
 
 function mapStateToProps (state: RootState): AppState {

@@ -1,11 +1,11 @@
 import { TelegramMessageReceivedActionType } from '../actions/telegramActions';
 
 export const AUTHORIZATION_STATES = {
-  PHONE_NUMBER: 'authStateWaitPhoneNumber',
-  CODE: 'authStateWaitCode',
-  PASSWORD: 'authStateWaitPassword',
-  AUTHORIZED: 'authStateOk',
-  LOGGING_OUT: 'authStateLoggingOut',
+  PHONE_NUMBER: 'authorizationStateWaitPhoneNumber',
+  CODE: 'authorizationStateWaitCode',
+  PASSWORD: 'authorizationStateWaitPassword',
+  AUTHORIZED: 'authorizationStateOk',
+  LOGGING_OUT: 'authorizationStateLoggingOut',
   LOADING: ''
 };
 

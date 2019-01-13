@@ -2,6 +2,7 @@ import { all, takeEvery, call, put } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 
 import { TelegramMessageReceivedActionType, TelegramMessageSendActionType } from '../actions/telegramActions';
+import { AUTHORIZATION_STATES } from '../reducers/appReducer';
 
 const TelegramWorker = require('../../services/telegram.worker');
 
@@ -42,12 +43,33 @@ function sendMessage (action: any) {
   worker.postMessage({
     type: 'send',
     payload: action.payload,
-  })
+  });
+}
+
+function loadInitialData (action: any) {
+  switch (action.payload.data['@type']) {
+    case 'updateAuthorizationState': {
+      if (action.payload.data.authorization_state['@type'] === AUTHORIZATION_STATES.AUTHORIZED) {
+        worker.postMessage({
+          type: 'send',
+          payload: {
+            '@type': 'setOption',
+            name: 'online',
+            value: {
+              '@type': 'optionValueBoolean',
+              value: true,
+            },
+          }
+        });
+      }
+    }
+  }
 }
 
 export function* telegramSaga () {
   return yield all([
     call(subscribeToTelegramWorker),
-    takeEvery(TelegramMessageSendActionType.SUCCESS,  sendMessage)
+    takeEvery(TelegramMessageReceivedActionType.SUCCESS, loadInitialData),
+    takeEvery(TelegramMessageSendActionType.SUCCESS, sendMessage)
   ]);
 }

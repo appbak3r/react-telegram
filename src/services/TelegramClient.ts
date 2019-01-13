@@ -35,9 +35,9 @@ export class TelegramClient {
       '@type': 'setTdlibParameters',
       parameters: {
         use_test_dc: true,
-        database_directory: '/tdlib',
-        files_directory: '/tdlib',
-        use_file_database: true,
+        database_directory: '/telegram_data',
+        files_directory: '/telegram_data',
+        use_file_database: false,
         use_message_database: true,
         api_id: options.apiId,
         api_hash: options.apiHash,

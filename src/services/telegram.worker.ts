@@ -1,5 +1,3 @@
-import fs from 'fs';
-
 import { environment } from '../config/environment';
 
 import { TELEGRAM_CLIENT_RECEIVE, TelegramClient } from './TelegramClient';
@@ -7,37 +5,58 @@ import { TELEGRAM_CLIENT_RECEIVE, TelegramClient } from './TelegramClient';
 importScripts('/td_wasm/td_wasm.js');
 
 /**
- * fs is patched to support browser
+ * TDLib WASM loader
  */
-BrowserFS.configure({
-  fs: 'IndexedDB',
-  options: {
-    storeName: 'react-telegram',
-  }
-}, () => {
-  try {
-    fs.mkdirSync('/tdlib');
-  } catch {
-    console.log('/tdlib already exists');
-  }
+
+const debouncedSave = (() => {
+  let timeout: number;
   
-  /**
-   * TDLib WASM loader
-   */
-  (self as any).Module().then((tdWASM: any) => {
+  return (FS: any) => {
+    if (timeout) {
+      self.clearTimeout(timeout);
+    }
+    
+    console.log('Syncing...');
+    
+    timeout = self.setTimeout(() => {
+      FS.syncfs(false, function (err: any) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log('Synced!');
+        }
+      });
+    }, 500);
+  };
+})();
+
+
+(self as any).Module().then((tdWASM: any) => {
+  let startInterval: number;
+  
+  startInterval = self.setInterval(() => {
+    if (!(self as any).syncdone) {
+      return;
+    }
+    
+    self.clearInterval(startInterval);
+    
     const telegramClient = new TelegramClient(tdWASM, {
       apiId: environment.apiId,
       apiHash: environment.apiHash,
     });
     
     telegramClient.addListener(TELEGRAM_CLIENT_RECEIVE, (message: any) => {
+      
+      debouncedSave(tdWASM.FS);
+      
       postMessage(message);
     });
     
     self.onmessage = (event) => {
       const action = event.data;
       
-      switch(action.type) {
+      switch (action.type) {
         case 'send': {
           telegramClient.send(action.payload);
           
@@ -49,5 +68,9 @@ BrowserFS.configure({
         }
       }
     };
-  });
+    
+  }, 500);
 });
+
+
+
