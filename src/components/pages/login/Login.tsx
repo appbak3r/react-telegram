@@ -17,6 +17,7 @@ class LoginWrapper extends Component<AppState & TelegramActions> {
       <div className='rt-login'>
         <LoginForm state={ authState }
                    onSubmit={ sendMessage }/>
+        
       </div>
     );
   }
