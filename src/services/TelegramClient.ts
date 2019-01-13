@@ -46,6 +46,9 @@ export class TelegramClient {
         system_version: navigator.appVersion,
         application_version: navigator.appName,
         enable_storage_optimizer: true,
+      },
+      '@extra': {
+        '@type': 'setTdlibParameters',
       }
     });
     

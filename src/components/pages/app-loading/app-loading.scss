@@ -1,0 +1,29 @@
+@import '~styles/base/variables';
+
+$rt-app-loading-subtitle-color: var(--theme-text-color-light);
+
+.rt-app-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  &__body {
+    text-align: center;
+  }
+
+  &__title {
+    margin-top: $grid-offset-step * 3;
+    font-weight: 700;
+    font-size: 24px;
+  }
+
+  &__subtitle {
+    color: $rt-app-loading-subtitle-color;
+  }
+
+  &__icon {
+    width: 100px;
+    height: 100px;
+  }
+}

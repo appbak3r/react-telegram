@@ -271,7 +271,8 @@ module.exports = function(webpackEnv) {
         'path': 'browserfs/dist/shims/path.js',
         'processGlobal': 'browserfs/dist/shims/process.js',
         'bufferGlobal': 'browserfs/dist/shims/bufferGlobal.js',
-        'bfsGlobal': require.resolve('browserfs')
+        'bfsGlobal': require.resolve('browserfs'),
+        'styles': paths.appStyles,
       },
       plugins: [
         // Adds support for installing with Plug'n'Play, leading to faster installs and adding
@@ -460,6 +461,26 @@ module.exports = function(webpackEnv) {
                 },
                 'sass-loader'
               ),
+            },
+            {
+              test: /\.svg$/,
+              use: [
+                {
+                  loader: 'svg-sprite-loader',
+                },
+                {
+                  loader: 'svgo-loader',
+                  options: {
+                    plugins: [
+                      { removeTitle: true },
+                      { mergePaths: true },
+                      { removeDesc: true },
+                      { convertPathData: false },
+                    ],
+                  },
+                },
+              ],
+              include: paths.appSrc,
             },
             // "file" loader makes sure those assets get served by WebpackDevServer.
             // When you `import` an asset, you get its (virtual) filename.

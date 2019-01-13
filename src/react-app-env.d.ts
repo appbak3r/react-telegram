@@ -40,12 +40,11 @@ declare module '*.webp' {
 }
 
 declare module '*.svg' {
-  import * as React from 'react';
+  type SvgSprite = {
+    id: string;
+  };
   
-  export const ReactComponent: React.SFC<React.SVGProps<SVGSVGElement>>;
-  
-  const src: string;
-  export default src;
+  export default svg as SvgSprite;
 }
 
 declare module '*.module.css' {

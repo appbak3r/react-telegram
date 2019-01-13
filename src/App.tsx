@@ -1,52 +1,24 @@
-import React, { PureComponent } from 'react';
-import { Form } from 'react-final-form';
+import React, { Component } from 'react';
+import { Switch } from 'react-router';
 
-import { Input } from './components/forms/input/Input';
-import { connect } from './store/connect';
-import { bindActionCreators } from 'redux';
-import { sendMessage, TelegramActions } from './store/actions/telegramActions';
+import { Messenger } from './components/pages/messenger/Messenger';
+import { Login } from './components/pages/login/Login';
 
-type AppOwnProps = {};
+import './assets/styles/main.scss';
 
-@connect<{}, TelegramActions, AppOwnProps>(null, mapDispatchToProps)
-class AppComponent extends PureComponent<TelegramActions & AppOwnProps> {
-  state: any = {
-    messages: [],
-  };
-  
-  onSubmit = (values: any) => {
-    this.props.sendMessage();
-  };
-  
+import { PrivateRoute } from './components/pages/PrivateRoute';
+import { AppRoute } from './components/pages/AppRoute';
+
+export class App extends Component {
   render (): React.ReactNode {
     return (
       <div className='rt-app'>
-        <Form onSubmit={ this.onSubmit }>
-          { ({ handleSubmit }) => {
-            return (
-              <form onSubmit={ handleSubmit }>
-                <Input name='type' placeholder='type'/>
-                
-                <Input name='phone' placeholder='phone'/>
-                <Input name='code' placeholder='code'/>
-                <Input name='password' placeholder='password'/>
-                
-                <button>submit</button>
-              </form>
-            );
-          } }
-        </Form>
-        
-        { this.state.messages.map((item: any, index: number) => {
-          return JSON.stringify(item);
-        }) }
+        <Switch>
+          <AppRoute path={ '/login' } exact={ true } component={ Login }/>
+          
+          <PrivateRoute path='/' component={ Messenger }/>
+        </Switch>
       </div>
     );
   }
-}
-
-export const App: React.ComponentClass<AppOwnProps> = AppComponent as any;
-
-function mapDispatchToProps (dispatch: any) {
-  return bindActionCreators({ sendMessage }, dispatch);
 }
