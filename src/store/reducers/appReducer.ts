@@ -4,9 +4,9 @@ export const AUTHORIZATION_STATES = {
   PHONE_NUMBER: 'authorizationStateWaitPhoneNumber',
   CODE: 'authorizationStateWaitCode',
   PASSWORD: 'authorizationStateWaitPassword',
-  AUTHORIZED: 'authorizationStateOk',
+  AUTHORIZED: 'authorizationStateReady',
   LOGGING_OUT: 'authorizationStateLoggingOut',
-  LOADING: ''
+  LOADING: 'authorizationStateWaitEncryptionKey'
 };
 
 export interface AppState {

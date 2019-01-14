@@ -46,6 +46,27 @@ function sendMessage (action: any) {
   });
 }
 
+export const asyncSendMessage = (message: any): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    const onMessageReceived = (event: any) => {
+      worker.removeEventListener('message', onMessageReceived);
+      
+      if (event.data['@type'] === 'error') {
+        return reject(event.data);
+      }
+      
+      return resolve(event.data);
+    };
+    
+    worker.addEventListener('message', onMessageReceived);
+  
+    worker.postMessage({
+      type: 'send',
+      payload: message,
+    });
+  });
+};
+
 function loadInitialData (action: any) {
   switch (action.payload.data['@type']) {
     case 'updateAuthorizationState': {

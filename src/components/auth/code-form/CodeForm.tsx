@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Form } from 'react-final-form';
 import { Input } from '../../forms/input/Input';
+import { asyncSendMessage } from '../../../store/sagas/telegramSaga';
 
 interface CodeFormProps {
   onSubmit: (message: any) => void;
@@ -8,10 +9,13 @@ interface CodeFormProps {
 
 export class CodeForm extends PureComponent<CodeFormProps> {
   onSubmit = (values: any) => {
-    this.props.onSubmit({
+    asyncSendMessage({
       '@type': 'checkAuthenticationCode',
       ...values,
-    });
+    }).then((data) => {
+    })
+      .catch((error) => {
+      });
   };
   
   sendViaSms = () => {

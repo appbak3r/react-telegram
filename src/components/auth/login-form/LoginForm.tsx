@@ -20,10 +20,6 @@ export class LoginForm extends PureComponent<LoginFormProps> {
     );
   }
   
-  logout = () => {
-    this.props.onSubmit({ '@type': 'logOut' });
-  };
-  
   renderForm (): React.ReactNode {
     const { state, onSubmit } = this.props;
     
@@ -43,11 +39,7 @@ export class LoginForm extends PureComponent<LoginFormProps> {
       }
       
       default: {
-        return <div>
-          { state }
-          
-          <button onClick={ this.logout }>Log out</button>
-        </div>;
+        return state;
       }
     }
   }
