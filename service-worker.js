@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/react-telegram/precache-manifest.fc36d71d56ba386e65b3be606792d137.js"
+  "/react-telegram/precache-manifest.84640388c06e95153f9d5468c22c7153.js"
 );
 
 workbox.clientsClaim();
