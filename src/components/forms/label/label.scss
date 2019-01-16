@@ -1,14 +1,14 @@
 @import '~styles/base/variables';
-
 $rt-label-title-color: var(--theme-text-color-light);
 
 .rt-label {
   display: block;
 
   &__title {
-    color: $rt-label-title-color;
-    text-transform: lowercase;
-    font-size: 14px;
     margin-bottom: $grid-offset-step;
+
+    color: $rt-label-title-color;
+    font-size: 14px;
+    text-transform: lowercase;
   }
 }

@@ -2,16 +2,17 @@ import React, { PureComponent } from 'react';
 import { Form } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
 
-import { Input } from '../../forms/input/Input';
+import { GeoApiService } from '../../../services/GeoApiService';
+
 import { LogoIcon } from '../../common/icons/LogoIcon';
 import { Label } from '../../forms/label/Label';
-
-import './phone-form.scss';
 import { Button } from '../../common/button/Button';
 import { Select } from '../../forms/select/Select';
 import { MaskedInput } from '../../forms/masked-input/MaskedInput';
+
 import { COUNTRY_PHONE } from '../../../constants/CountryPhone';
-import { GeoApiService } from '../../../services/GeoApiService';
+
+import './phone-form.scss';
 
 interface PhoneFormProps {
   onSubmit: (message: any) => void;
@@ -28,7 +29,6 @@ const countryOptions = COUNTRY_PHONE.map((country: any) => {
     code: country.isoCode,
   };
 });
-
 
 export class PhoneForm extends PureComponent<PhoneFormProps, PhoneFormState> {
   state: PhoneFormState = {};
