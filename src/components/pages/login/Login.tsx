@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import { bindActionCreators } from 'redux';
+import { FormattedMessage } from 'react-intl';
+import { Helmet } from 'react-helmet';
 
 import { connect } from '../../../store/connect';
 import { RootState } from '../../../store/reducers/rootReducer';
@@ -8,6 +10,8 @@ import { AppState, AUTHORIZATION_STATES } from '../../../store/reducers/appReduc
 import { TelegramActions, sendMessage } from '../../../store/actions/telegramActions';
 
 import { LoginForm } from '../../auth/login-form/LoginForm';
+
+import './login.scss';
 
 @connect<AppState, TelegramActions>(mapStateToProps, mapDispatchToProps)
 class LoginWrapper extends Component<AppState & TelegramActions> {
@@ -20,9 +24,19 @@ class LoginWrapper extends Component<AppState & TelegramActions> {
     
     return (
       <div className='rt-login'>
+        <FormattedMessage id={ 'common.pages.login.title' }
+                          defaultMessage={ 'Telegram | Sign in' }>
+          {
+            title => (
+              <Helmet>
+                <title>{ title }</title>
+              </Helmet>
+            )
+          }
+        </FormattedMessage>
+        
         <LoginForm state={ authState }
                    onSubmit={ sendMessage }/>
-      
       </div>
     );
   }

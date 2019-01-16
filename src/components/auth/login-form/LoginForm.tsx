@@ -23,8 +23,6 @@ export class LoginForm extends PureComponent<LoginFormProps> {
   renderForm (): React.ReactNode {
     const { state, onSubmit } = this.props;
     
-    console.log(state);
-    
     switch (state) {
       case AUTHORIZATION_STATES.PHONE_NUMBER: {
         return <PhoneForm onSubmit={ onSubmit }/>;
