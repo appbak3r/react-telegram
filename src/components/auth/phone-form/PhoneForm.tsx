@@ -48,7 +48,7 @@ export class PhoneForm extends PureComponent<PhoneFormProps, PhoneFormState> {
   onSubmit = (values: any) => {
     this.props.onSubmit({
       '@type': 'setAuthenticationPhoneNumber',
-      ...values,
+      phone_number: values.phone,
     });
   };
   
