@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 
+import './label.scss';
+
 interface LabelProps {
   title?: string | React.ReactNode;
   className?: string;

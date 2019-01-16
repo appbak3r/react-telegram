@@ -9,6 +9,8 @@ import { ConnectedIntlProvider, TextComponent } from './components/common/connec
 import { configureStore } from './store/configureStore';
 import { AppHistory } from './config/appHistory';
 
+import { enableTabMode } from './utils/enableTabMode';
+
 const rootElement = document.getElementById('root');
 const AppStore    = configureStore();
 
@@ -25,3 +27,13 @@ const render = (Component: ComponentClass) => {
 };
 
 render(App);
+
+if ((module as any).hot) {
+  (module as any).hot.accept();
+  
+  const NextApp = require('./App').App;
+  
+  render(NextApp);
+}
+
+enableTabMode();
