@@ -2,7 +2,7 @@ import { environment } from '../config/environment';
 
 import { TELEGRAM_CLIENT_RECEIVE, TelegramClient } from './TelegramClient';
 
-importScripts('/td_wasm/td_wasm.js');
+importScripts(`${process.env.PUBLIC_URL}/td_wasm/td_wasm.js`);
 
 /**
  * TDLib WASM loader
