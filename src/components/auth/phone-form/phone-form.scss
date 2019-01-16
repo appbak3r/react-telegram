@@ -1,0 +1,25 @@
+@import '~styles/base/variables';
+
+$rt-phone-form-subtitle-color: var(--theme-text-color-light);
+
+.rt-phone-form {
+  &__header {
+    text-align: center;
+    margin-bottom: $grid-offset-step * 10;
+  }
+
+  &__title {
+    margin-top: $grid-offset-step * 3;
+    font-weight: 700;
+    font-size: 24px;
+  }
+
+  &__subtitle {
+    color: $rt-phone-form-subtitle-color;
+  }
+
+  &__logo {
+    width: 100px;
+    height: 100px;
+  }
+}

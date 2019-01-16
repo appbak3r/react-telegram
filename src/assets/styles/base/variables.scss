@@ -7,4 +7,7 @@ $grid-offset-step: 5px;
   --theme-font-size: 16px;
   --theme-text-color: #222222;
   --theme-text-color-light: #{lighten(#222222, 30%)};
+  --theme-color-gray: #d3d3d3;
+  --theme-color-primary: #37aee2;
+  --theme-color-white: #ffffff;
 }

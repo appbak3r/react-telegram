@@ -10,7 +10,7 @@ export class Button extends PureComponent<ButtonProps> {
     const { className, ...restProps } = this.props;
     
     const rootClassNames = classNames({
-      'rt-btn': true,
+      'rt-button': true,
       [className as string]: className,
     });
     

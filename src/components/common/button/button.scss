@@ -1,3 +1,14 @@
-.rt-button {
+@import '~styles/base/variables';
 
+.rt-button {
+  border-radius: $grid-offset-step * 6;
+  border: 0;
+  padding: $grid-offset-step * 2 $grid-offset-step * 8;
+}
+
+.rt-button {
+  &--primary {
+    background-color: var(--theme-color-primary);
+    color: var(--theme-color-white);
+  }
 }

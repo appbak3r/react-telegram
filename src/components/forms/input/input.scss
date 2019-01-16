@@ -1,3 +1,9 @@
+$rt-input-border-color: var(--theme-color-gray);
+
 .rt-input {
 
+  &__input {
+    border: 0;
+    border-bottom: 1px solid $rt-input-border-color;
+  }
 }
