@@ -21,6 +21,7 @@ First obtain your `api_id` and `api_hash` from [https://my.telegram.org](https:/
 | -------------------------------- | :---------------------------------------- | :------------------------------------- |
 | REACT_APP_TELEGRAM_API_ID        | TDLib api_id                              | `12345`                                |
 | REACT_APP_TELEGRAM_API_HASH      | TDLib api_hash                            | `kl3jf9429489dedkdkalsdlss`            |
+| REACT_APP_TELEGRAM_PRODUCTION_DC | Use production dc                         | `true`                                 |
 
 ### Development
 

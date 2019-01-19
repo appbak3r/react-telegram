@@ -11,4 +11,5 @@ export const environmentDefault: IEnvironment = {
   apiId,
   apiHash,
   isLoggerEnabled: true,
+  useTestDC: !process.env.REACT_APP_TELEGRAM_PRODUCTION_DC,
 };

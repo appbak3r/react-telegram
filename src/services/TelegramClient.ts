@@ -1,4 +1,5 @@
 import EventEmitter from 'eventemitter3';
+import { environment } from '../config/environment';
 
 const TD_RECEIVE_DELAY = 100;
 
@@ -34,7 +35,7 @@ export class TelegramClient {
     this.send({
       '@type': 'setTdlibParameters',
       parameters: {
-        use_test_dc: true,
+        use_test_dc: environment.useTestDC,
         database_directory: '/telegram_data',
         files_directory: '/telegram_data',
         use_file_database: false,
