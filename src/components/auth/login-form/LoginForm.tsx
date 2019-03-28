@@ -1,14 +1,13 @@
 import React, { PureComponent } from 'react';
 
-import { AUTHORIZATION_STATES } from '../../../store/reducers/appReducer';
-
 import { PhoneForm } from '../phone-form/PhoneForm';
 import { CodeForm } from '../code-form/CodeForm';
 import { PasswordForm } from '../password-form/PasswordForm';
+import { AUTHORIZATION_STATES } from '../../../store/telegram/types';
 
-interface LoginFormProps {
-  state: string;
-  onSubmit: (message: any) => void;
+type LoginFormProps = {
+  state: any;
+  onSubmit: any;
 }
 
 export class LoginForm extends PureComponent<LoginFormProps> {

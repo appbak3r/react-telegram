@@ -47,7 +47,6 @@ const debouncedSave = (() => {
     });
     
     telegramClient.addListener(TELEGRAM_CLIENT_RECEIVE, (message: any) => {
-      
       debouncedSave(tdWASM.FS);
       
       postMessage(message);

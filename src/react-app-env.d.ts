@@ -9,6 +9,8 @@ declare namespace NodeJS {
   }
 }
 
+type Nullable<T> = T | null;
+
 declare module '*.bmp' {
   const src: string;
   export default src;

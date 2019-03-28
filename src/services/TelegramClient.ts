@@ -1,5 +1,6 @@
 import EventEmitter from 'eventemitter3';
 import { environment } from '../config/environment';
+import { AUTHORIZATION_STATES, TELEGRAM_MESSAGE_TYPES } from '../store/telegram/types';
 
 const TD_RECEIVE_DELAY = 100;
 
@@ -16,7 +17,7 @@ export class TelegramClient {
   private client: any;
   private eventEmitter: EventEmitter = new EventEmitter();
   
-  constructor (private tdWasm: any, options: TelegramClientOptions) {
+  constructor (private tdWasm: any, private options: TelegramClientOptions) {
     this.tdFunctions = {
       td_create: tdWasm.cwrap('td_create', 'number', []),
       td_destroy: tdWasm.cwrap('td_destroy', null, ['number']),
@@ -26,34 +27,8 @@ export class TelegramClient {
       td_set_verbosity: tdWasm.cwrap('td_set_verbosity', null, ['number'])
     };
     
-    this.create();
-    
-    this.tdFunctions.td_set_verbosity(2);
-    
     this.loopReceive();
-    
-    this.send({
-      '@type': 'setTdlibParameters',
-      parameters: {
-        use_test_dc: environment.useTestDC,
-        database_directory: '/telegram_data',
-        files_directory: '/telegram_data',
-        use_file_database: false,
-        use_message_database: true,
-        api_id: options.apiId,
-        api_hash: options.apiHash,
-        system_language_code: 'en',
-        device_model: navigator.appVersion,
-        system_version: navigator.appVersion,
-        application_version: navigator.appName,
-        enable_storage_optimizer: true,
-      },
-      '@extra': {
-        '@type': 'setTdlibParameters',
-      }
-    });
-    
-    this.send({ '@type': 'checkDatabaseEncryptionKey' });
+    this.create();
   }
   
   execute (message: any): void {
@@ -67,12 +42,21 @@ export class TelegramClient {
   }
   
   receive (): any {
+    if (!this.client) {
+      return null;
+    }
+    
     const result = this.tdFunctions.td_receive(this.client);
     
     if (result) {
       const parsedResult = JSON.parse(result);
       
       this.eventEmitter.emit(TELEGRAM_CLIENT_RECEIVE, parsedResult);
+      
+      if (parsedResult['@type'] === TELEGRAM_MESSAGE_TYPES.UPDATE_AUTHORIZATION_STATE && parsedResult.authorization_state['@type'] === AUTHORIZATION_STATES.CLOSED) {
+        this.destroy();
+        this.create();
+      }
       
       return parsedResult;
     } else {
@@ -102,5 +86,35 @@ export class TelegramClient {
   
   private create (): void {
     this.client = this.tdFunctions.td_create();
+    
+    this.tdFunctions.td_set_verbosity(2);
+    
+    this.send({
+      '@type': 'setTdlibParameters',
+      parameters: {
+        use_test_dc: environment.useTestDC,
+        database_directory: '/telegram_data',
+        files_directory: '/telegram_data',
+        use_file_database: false,
+        use_message_database: true,
+        api_id: this.options.apiId,
+        api_hash: this.options.apiHash,
+        system_language_code: 'en',
+        device_model: navigator.appVersion,
+        system_version: navigator.appVersion,
+        application_version: navigator.appName,
+        enable_storage_optimizer: true,
+      },
+      '@extra': {
+        '@type': 'setTdlibParameters',
+      }
+    });
+    
+    this.send({ '@type': 'checkDatabaseEncryptionKey' });
+  }
+  
+  private destroy (): void {
+    this.tdFunctions.td_destroy();
+    this.client = null;
   }
 }

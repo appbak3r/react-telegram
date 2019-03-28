@@ -1,13 +1,26 @@
 import React, { PureComponent } from 'react';
-import { bindActionCreators } from 'redux';
-
-import { connect } from '../../../store/connect';
-import { AuthActions, logout } from '../../../store/actions/authActions';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 
 import { Button } from '../../common/button/Button';
+import { LogoutAction } from '../../../store/auth/actions';
 
-@connect<{}, AuthActions>(null, mapDispatchToProps)
-class LogoutButtonWrapper extends PureComponent<AuthActions> {
+type OwnProps = {};
+
+type DispatchProps = {
+  logout: typeof LogoutAction
+};
+
+type LogoutButtonProps = OwnProps & Partial<DispatchProps>;
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return bindActionCreators({
+    logout: LogoutAction
+  }, dispatch);
+};
+
+@(connect as any)(null, mapDispatchToProps)
+export class LogoutButton extends PureComponent<LogoutButtonProps> {
   render () {
     return (
       <Button className='ri-logout-button'
@@ -17,9 +30,3 @@ class LogoutButtonWrapper extends PureComponent<AuthActions> {
     );
   }
 }
-
-function mapDispatchToProps (dispatch: any) {
-  return bindActionCreators({ logout }, dispatch);
-}
-
-export const LogoutButton: React.ComponentType = LogoutButtonWrapper as any;

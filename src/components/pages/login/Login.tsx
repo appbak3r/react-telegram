@@ -1,24 +1,28 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { FormattedMessage } from 'react-intl';
 import { Helmet } from 'react-helmet';
-
-import { connect } from '../../../store/connect';
-import { RootState } from '../../../store/reducers/rootReducer';
-import { AppState, AUTHORIZATION_STATES } from '../../../store/reducers/appReducer';
-import { TelegramActions, sendMessage } from '../../../store/actions/telegramActions';
+import { connect } from 'react-redux';
 
 import { LoginForm } from '../../auth/login-form/LoginForm';
 
+import { AuthState } from '../../../store/auth/reducer';
+import { RootState } from '../../../store/reducer';
+import { SendMessageAction } from '../../../store/telegram/actions';
+
 import './login.scss';
 
-@connect<AppState, TelegramActions>(mapStateToProps, mapDispatchToProps)
-class LoginWrapper extends Component<AppState & TelegramActions> {
+type OwnProps = {};
+type DispatchProps = { sendMessage: typeof SendMessageAction };
+type LoginProps = OwnProps & Partial<AuthState & DispatchProps>;
+
+@(connect as any)(mapStateToProps, mapDispatchToProps)
+export class Login extends Component<LoginProps> {
   render () {
-    const { authState, sendMessage } = this.props;
+    const { authState, isAuthorized, sendMessage } = this.props;
     
-    if (this.props.authState === AUTHORIZATION_STATES.AUTHORIZED) {
+    if (isAuthorized) {
       return <Redirect to={ '/' }/>;
     }
     
@@ -42,12 +46,10 @@ class LoginWrapper extends Component<AppState & TelegramActions> {
   }
 }
 
-function mapDispatchToProps (dispatch: any) {
-  return bindActionCreators({ sendMessage }, dispatch);
+function mapDispatchToProps (dispatch: Dispatch) {
+  return bindActionCreators({ sendMessage: SendMessageAction }, dispatch);
 }
 
-function mapStateToProps (state: RootState): AppState {
-  return state.app;
+function mapStateToProps (state: RootState): AuthState {
+  return state.auth;
 }
-
-export const Login: React.ComponentType = LoginWrapper as any;

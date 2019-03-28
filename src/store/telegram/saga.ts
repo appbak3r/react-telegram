@@ -1,8 +1,9 @@
 import { all, takeEvery, call, put } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
+import { getType } from 'typesafe-actions';
 
-import { TelegramMessageReceivedActionType, TelegramMessageSendActionType } from '../actions/telegramActions';
-import { AUTHORIZATION_STATES } from '../reducers/appReducer';
+import { AUTHORIZATION_STATES } from './types';
+import { ReceiveMessageAction, SendMessageAction, SendMessageFailureAction, SendMessageSuccessAction } from './actions';
 
 const TelegramWorker = require('../../services/telegram.worker');
 
@@ -13,12 +14,9 @@ function createWorker () {
   
   return eventChannel((emit: any) => {
     worker.onmessage = (event: any) => {
-      emit({
-        type: TelegramMessageReceivedActionType.SUCCESS,
-        payload: {
-          data: event.data,
-        }
-      });
+      emit(ReceiveMessageAction({
+        data: event.data,
+      }));
     };
     
     return worker.terminate;
@@ -35,15 +33,18 @@ function* dispatchMessage (action: any) {
   return yield put(action);
 }
 
-function sendMessage (action: any) {
+function* sendMessage (action: any) {
   if (!worker) {
     throw new Error('Worker is not yet ready');
   }
   
-  worker.postMessage({
-    type: 'send',
-    payload: action.payload,
-  });
+  try {
+    yield asyncSendMessage(action.payload);
+    
+    put(SendMessageSuccessAction());
+  } catch {
+    put(SendMessageFailureAction());
+  }
 }
 
 export const asyncSendMessage = (message: any): Promise<any> => {
@@ -59,7 +60,7 @@ export const asyncSendMessage = (message: any): Promise<any> => {
     };
     
     worker.addEventListener('message', onMessageReceived);
-  
+    
     worker.postMessage({
       type: 'send',
       payload: message,
@@ -90,7 +91,7 @@ function loadInitialData (action: any) {
 export function* telegramSaga () {
   return yield all([
     call(subscribeToTelegramWorker),
-    takeEvery(TelegramMessageReceivedActionType.SUCCESS, loadInitialData),
-    takeEvery(TelegramMessageSendActionType.SUCCESS, sendMessage)
+    takeEvery(getType(ReceiveMessageAction), loadInitialData),
+    takeEvery(getType(SendMessageAction), sendMessage)
   ]);
 }
