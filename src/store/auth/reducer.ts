@@ -1,9 +1,8 @@
 import { ActionType, getType } from 'typesafe-actions';
-
-import * as actions from './actions';
 import * as telegramActions from '../telegram/actions';
-import { TELEGRAM_MESSAGE_TYPES } from '../telegram/types';
 import { TelegramAction } from '../telegram/reducer';
+import { TELEGRAM_MESSAGE_TYPES } from '../telegram/types';
+import * as actions from './actions';
 
 export type AuthState = {
   readonly isAuthorized: boolean;

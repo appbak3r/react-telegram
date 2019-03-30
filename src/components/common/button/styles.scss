@@ -1,7 +1,7 @@
 @import '~styles/base/variables';
 
 .rt-button {
-  border-radius: $grid-offset-step * 6;
+  border-radius: $grid-offset-step;
   border: 0;
   padding: $grid-offset-step * 2 $grid-offset-step * 8;
 }

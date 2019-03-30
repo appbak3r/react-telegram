@@ -1,17 +1,15 @@
+import block from 'bem-cn';
 import React, { Component } from 'react';
+import { Helmet } from 'react-helmet';
+import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { bindActionCreators, Dispatch } from 'redux';
-import { FormattedMessage } from 'react-intl';
-import { Helmet } from 'react-helmet';
-import { connect } from 'react-redux';
-
-import { LoginForm } from '../../auth/login-form/LoginForm';
-
 import { AuthState } from '../../../store/auth/reducer';
 import { RootState } from '../../../store/reducer';
 import { SendMessageAction } from '../../../store/telegram/actions';
-
-import './login.scss';
+import { LoginForm } from '../../auth/login-form/LoginForm';
+import './styles.scss';
 
 type OwnProps = {};
 type DispatchProps = { sendMessage: typeof SendMessageAction };
@@ -20,6 +18,8 @@ type LoginProps = OwnProps & Partial<AuthState & DispatchProps>;
 @(connect as any)(mapStateToProps, mapDispatchToProps)
 export class Login extends Component<LoginProps> {
   render () {
+    const bem = block('rt-login');
+    
     const { authState, isAuthorized, sendMessage } = this.props;
     
     if (isAuthorized) {
@@ -27,7 +27,7 @@ export class Login extends Component<LoginProps> {
     }
     
     return (
-      <div className='rt-login'>
+      <div className={ bem() }>
         <FormattedMessage id={ 'common.pages.login.title' }
                           defaultMessage={ 'Telegram | Sign in' }>
           {
@@ -39,8 +39,10 @@ export class Login extends Component<LoginProps> {
           }
         </FormattedMessage>
         
-        <LoginForm state={ authState }
-                   onSubmit={ sendMessage }/>
+        <div className={ bem('body') }>
+          <LoginForm state={ authState }
+                     onSubmit={ sendMessage }/>
+        </div>
       </div>
     );
   }

@@ -1,0 +1,36 @@
+@import '~styles/base/mixins';
+@import '~styles/base/variables';
+
+.rt-app-loading {
+  @include wavesBackground;
+
+  height: 100%;
+
+  &__body {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    text-align: center;
+
+    transform: translate(-50%, -50%);
+  }
+
+  .rt-logo__icon {
+    animation: __bounceInDown 1s infinite ease-in;
+  }
+}
+
+@keyframes __bounceInDown {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}

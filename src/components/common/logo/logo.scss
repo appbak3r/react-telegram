@@ -1,0 +1,19 @@
+@import '~styles/base/variables';
+
+.rt-logo {
+  &__icon {
+    width: 100px;
+    height: 100px;
+  }
+
+  &__title {
+    margin-top: $grid-offset-step * 3;
+
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  &__subtitle {
+    color: var(--theme-text-color-light);
+  }
+}

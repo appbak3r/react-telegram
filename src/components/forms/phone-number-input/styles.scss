@@ -1,0 +1,31 @@
+@import '~styles/base/variables';
+
+.rt-phone-number-input {
+
+  .react-phone-number-input__row {
+    display: grid;
+
+    align-items: center;
+    grid-column-gap: $grid-offset-step;
+    grid-row-gap: $grid-offset-step * 2;
+    grid-template-areas: 'select select' 'icon input';
+  }
+
+  .react-phone-number-input__icon {
+    grid-area: icon;
+  }
+
+  .rt-phone-number-country-select {
+    grid-area: select;
+  }
+
+  .react-phone-number-input__input {
+    grid-area: input;
+  }
+
+  &__input {
+    border: 0;
+    border-bottom: 1px solid var(--theme-color-gray);
+    height: 38px;
+  }
+}

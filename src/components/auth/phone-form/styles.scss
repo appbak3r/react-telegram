@@ -1,0 +1,14 @@
+@import '~styles/base/variables';
+
+.rt-phone-form {
+  &__header {
+    margin-bottom: $grid-offset-step * 7;
+
+    text-align: center;
+  }
+
+  &__body {
+    display: grid;
+    grid-row-gap: $grid-offset-step * 2;
+  }
+}

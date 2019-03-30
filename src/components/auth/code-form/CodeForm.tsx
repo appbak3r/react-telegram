@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Form } from 'react-final-form';
+import { Button } from '../../common/button/Button';
+import { FormattedMessage } from 'react-intl';
 import { Input } from '../../forms/input/Input';
 
 interface CodeFormProps {
@@ -28,11 +30,17 @@ export class CodeForm extends PureComponent<CodeFormProps> {
             <form onSubmit={ handleSubmit } className='rt-code-form'>
               <h1>Enter code</h1>
               
-              <Input name={ 'code' }/>
+              <Input name='code'/>
               
-              <button type='button' onClick={ this.sendViaSms }>resend</button>
+              <Button type='button' onClick={ this.sendViaSms }>
+                <FormattedMessage id='components.code-form.resend'
+                                  defaultMessage={ 'Resend' }/>
+              </Button>
               
-              <button>submit</button>
+              <Button className='rt-button--primary'>
+                <FormattedMessage id='components.code-form.submit'
+                                  defaultMessage={ 'Next' }/>
+              </Button>
             </form>
           );
         } }

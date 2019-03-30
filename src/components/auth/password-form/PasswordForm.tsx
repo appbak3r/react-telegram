@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { Form } from 'react-final-form';
-import { Input } from '../../forms/input/Input';
 
 interface PasswordFormProps {
   onSubmit: (message: any) => void;
@@ -22,7 +21,6 @@ export class PasswordForm extends PureComponent<PasswordFormProps> {
             <form onSubmit={ handleSubmit } className='rt-password-form'>
               <h1>Enter password</h1>
               
-              <Input name={ 'password' }/>
               
               <button>submit</button>
             </form>

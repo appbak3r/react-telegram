@@ -4,26 +4,23 @@ import { Redirect, Route, RouteProps } from 'react-router-dom';
 
 import { AppLoading } from './app-loading/AppLoading';
 import { RootState } from '../../store/reducer';
-import { AUTHORIZATION_STATES } from '../../store/telegram/types';
 
 const mapStateToProps = (state: RootState) => {
-  return {
-    auth: state.auth,
-  };
+  return state;
 };
 
 export const PrivateRoute: React.ComponentType<RouteProps> = connect(mapStateToProps)((props: RouteProps & RootState) => {
-  const { component, auth, ...restProps } = props;
+  const { component, telegram, auth, app, ...restProps } = props;
   
   const Component: React.ComponentType<any> = component as any;
   
   return <Route { ...restProps }
                 render={ (props => {
-                  if (auth.authState === AUTHORIZATION_STATES.LOADING) {
+                  if (!telegram.isReady || app.fetching) {
                     return (<AppLoading/>);
                   }
     
-                  if (auth.authState !== AUTHORIZATION_STATES.AUTHORIZED) {
+                  if (!auth.isAuthorized) {
                     return <Redirect to={ '/login' }/>;
                   }
     

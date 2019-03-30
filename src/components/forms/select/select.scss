@@ -1,9 +1,0 @@
-$rt-select-border-color: var(--theme-color-gray);
-
-.rt-select {
-  & &__control {
-    border: 0;
-    border-bottom: 1px solid $rt-select-border-color;
-    border-radius: 0;
-  }
-}

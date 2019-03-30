@@ -1,7 +1,8 @@
+import block from 'bem-cn';
 import React, { ButtonHTMLAttributes, PureComponent } from 'react';
 import classNames from 'classnames';
 
-import './button.scss';
+import './styles.scss';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -9,8 +10,10 @@ export class Button extends PureComponent<ButtonProps> {
   render () {
     const { className, ...restProps } = this.props;
     
+    const bem = block('rt-button');
+    
     const rootClassNames = classNames({
-      'rt-button': true,
+      [bem()]: true,
       [className as string]: className,
     });
     

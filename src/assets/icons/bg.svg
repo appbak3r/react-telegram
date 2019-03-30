@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1440 250" style="enable-background:new 0 0 1440 250;" xml:space="preserve">
+<style type="text/css">
+	.st0{opacity:0.3;fill:url(#Path-2_1_);fill-opacity:0.45;enable-background:new    ;}
+	.st1{opacity:0.3;fill:url(#Path-4_1_);fill-opacity:0.65;enable-background:new    ;}
+	.st2{opacity:0.85;fill:#34ABEB;fill-opacity:0.85;enable-background:new    ;}
+</style>
+<g id="Слой_1">
+	<g id="Login">
+		<g id="Desktop-HD" transform="translate(0.000000, -783.000000)">
+			<g id="Group" transform="translate(0.000000, 782.623790)">
+				
+					<radialGradient id="Path-2_1_" cx="1.544" cy="251.3707" r="1" gradientTransform="matrix(1.114430e-14 182 182.0002 -1.114429e-14 -45029.5117 -212.6238)" gradientUnits="userSpaceOnUse">
+					<stop  offset="0" style="stop-color:#3FB8F9"/>
+					<stop  offset="1" style="stop-color:#3EBBFF"/>
+				</radialGradient>
+				<path id="Path-2" class="st0" d="M0,250.4h1440v-98.5c-228.5,15.2-374.9,20.8-439,16.7c-96.3-6.2-377.9-100.2-609-100.2
+					c-139,0-227.1,25.4-392,76.2V250.4z"/>
+				
+					<radialGradient id="Path-4_1_" cx="1.5332" cy="251.3721" r="1" gradientTransform="matrix(1.475699e-14 241 240.9998 -1.475699e-14 -59860.6328 -360.1238)" gradientUnits="userSpaceOnUse">
+					<stop  offset="0" style="stop-color:#3FB8F9"/>
+					<stop  offset="1" style="stop-color:#3EBBFF"/>
+				</radialGradient>
+				<path id="Path-4" class="st1" d="M0,32v218.3h1440V9.4c-162.4,111.2-330.1,166.8-503.3,166.8c-163.8,0-361.7-10.3-521-32
+					C326.9,132.1,49.5,43.4,30.9,38.5C25.2,37,14.9,34.9,0,32z"/>
+				<path id="Path" class="st2" d="M0,61.2c236.5,86.6,415.1,122.1,535.7,106.4C716.6,144,858,33.4,1052,38.7
+					c139.2,4.5,268.5,39.8,388,105.7v106H0V61.2z"/>
+			</g>
+		</g>
+	</g>
+</g>
+<g id="Слой_2">
+</g>
+</svg>
