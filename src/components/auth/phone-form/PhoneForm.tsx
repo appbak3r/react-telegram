@@ -19,6 +19,10 @@ type DispatchProps = {
   setPhoneNumber: typeof SetPhoneNumberAction;
 };
 
+type FormValues = {
+  phone?: string;
+};
+
 const mapStateToProps = (state: RootState): AuthState => {
   return state.auth;
 };
@@ -34,8 +38,10 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
 
 @((connect as any)(mapStateToProps, mapDispatchToProps))
 class ConnectedPhoneForm extends PureComponent<PhoneFormProps> {
-  onSubmit = (values: any) => {
-    this.props.setPhoneNumber(values.phone);
+  onSubmit = ({ phone }: FormValues) => {
+    if (phone) {
+      this.props.setPhoneNumber(phone);
+    }
   };
 
   render() {

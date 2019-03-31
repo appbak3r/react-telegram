@@ -1,26 +1,54 @@
 import React, { PureComponent } from "react";
 import { Form } from "react-final-form";
+import { connect } from "react-redux";
+import { bindActionCreators, Dispatch } from "redux";
+import { ResendCodeAction, SetCodeAction } from "../../../store/auth/actions";
+import { AuthState } from "../../../store/auth/reducer";
+import { RootState } from "../../../store/reducer";
 import { Button } from "../../common/button/Button";
 import { FormattedMessage } from "react-intl";
 import { Input } from "../../forms/input/Input";
 import { LogoutButton } from "../logout-button/LogoutButton";
 
-interface CodeFormProps {
-  onSubmit: (message: any) => void;
-}
+type StateProps = AuthState;
 
-export class CodeForm extends PureComponent<CodeFormProps> {
-  onSubmit = (values: any) => {
-    this.props.onSubmit({
-      "@type": "checkAuthenticationCode",
-      ...values
-    });
+type DispatchProps = {
+  setCode: typeof SetCodeAction;
+  resendCode: typeof ResendCodeAction;
+};
+
+type OwnProps = {};
+
+type CodeFormProps = OwnProps & DispatchProps & StateProps;
+
+type FormValues = {
+  code?: string;
+};
+
+const mapStateToProps = (state: RootState) => {
+  return state.auth;
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return bindActionCreators(
+    {
+      setCode: SetCodeAction,
+      resendCode: ResendCodeAction
+    },
+    dispatch
+  );
+};
+
+@((connect as any)(mapStateToProps, mapDispatchToProps))
+class ConnectedCodeForm extends PureComponent<CodeFormProps> {
+  onSubmit = ({ code }: FormValues) => {
+    if (code) {
+      this.props.setCode(code);
+    }
   };
 
-  sendViaSms = () => {
-    this.props.onSubmit({
-      "@type": "resendAuthenticationCode"
-    });
+  resendCode = () => {
+    this.props.resendCode();
   };
 
   render() {
@@ -33,14 +61,16 @@ export class CodeForm extends PureComponent<CodeFormProps> {
 
               <Input name="code" />
 
-              <Button type="button" onClick={this.sendViaSms}>
+              <Button type="button" onClick={this.resendCode}>
                 <FormattedMessage
                   id="components.code-form.resend"
                   defaultMessage={"Resend"}
                 />
               </Button>
 
-              <Button className="rt-button--primary">
+              <Button
+                className="rt-button--primary"
+                loading={this.props.isFetching}>
                 <FormattedMessage
                   id="components.code-form.submit"
                   defaultMessage={"Next"}
@@ -55,3 +85,7 @@ export class CodeForm extends PureComponent<CodeFormProps> {
     );
   }
 }
+
+export const CodeForm = (ConnectedCodeForm as unknown) as React.ComponentType<
+  OwnProps
+>;

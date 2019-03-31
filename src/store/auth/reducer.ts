@@ -60,6 +60,7 @@ export const authReducer = (
       };
     }
 
+    case getType(actions.SetCodeAction):
     case getType(actions.SetPhoneNumberAction): {
       return {
         ...state,
@@ -67,6 +68,7 @@ export const authReducer = (
       };
     }
 
+    case getType(actions.SetCodeSuccessAction):
     case getType(actions.SetPhoneNumberSuccessAction): {
       return {
         ...state,
@@ -74,6 +76,7 @@ export const authReducer = (
       };
     }
 
+    case getType(actions.SetCodeFailureAction):
     case getType(actions.SetPhoneNumberFailureAction): {
       return {
         ...state,

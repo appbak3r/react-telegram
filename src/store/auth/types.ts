@@ -7,3 +7,11 @@ export const LOGIN_SUCCESS = "@rt/auth/login/success";
 export const SET_PHONE_NUMBER = "@rt/auth/set-phone-number/fetching";
 export const SET_PHONE_NUMBER_SUCCESS = "@rt/auth/set-phone-number/success";
 export const SET_PHONE_NUMBER_FAILURE = "@rt/auth/set-phone-number/failure";
+
+export const SET_CODE = "@rt/auth/set-code/fetching";
+export const SET_CODE_SUCCESS = "@rt/auth/set-code/success";
+export const SET_CODE_FAILURE = "@rt/auth/set-code/failure";
+
+export const RESEND_CODE = "@rt/auth/resend-code/fetching";
+export const RESEND_CODE_SUCCESS = "@rt/auth/resend-code/success";
+export const RESEND_CODE_FAILURE = "@rt/auth/resend-code/failure";

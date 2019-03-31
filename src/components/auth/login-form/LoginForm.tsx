@@ -24,7 +24,7 @@ export class LoginForm extends PureComponent<LoginFormProps> {
       }
 
       case AUTHORIZATION_STATES.CODE: {
-        return <CodeForm onSubmit={onSubmit} />;
+        return <CodeForm />;
       }
 
       case AUTHORIZATION_STATES.PASSWORD: {

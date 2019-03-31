@@ -40,7 +40,9 @@ function* logout() {
   }
 }
 
-function* setPhoneNumber(action: any) {
+function* setPhoneNumber(
+  action: ReturnType<typeof actions.SetPhoneNumberAction>
+): Generator {
   try {
     yield asyncSendMessage({
       "@type": "setAuthenticationPhoneNumber",
@@ -53,10 +55,37 @@ function* setPhoneNumber(action: any) {
   }
 }
 
+function* setCode(action: ReturnType<typeof actions.SetCodeAction>): Generator {
+  try {
+    yield asyncSendMessage({
+      "@type": "checkAuthenticationCode",
+      code: action.payload.code
+    });
+
+    yield put(actions.SetCodeSuccessAction());
+  } catch (error) {
+    yield put(actions.SetCodeFailureAction());
+  }
+}
+
+function* resendCode(): Generator {
+  try {
+    yield asyncSendMessage({
+      "@type": "resendAuthenticationCode"
+    });
+
+    yield put(actions.ResendCodeSuccessAction());
+  } catch (error) {
+    yield put(actions.ResendCodeFailureAction());
+  }
+}
+
 export function* authSaga() {
   return yield all([
     takeEvery(getType(ReceiveMessageAction), updateAuthorization),
     takeEvery(getType(actions.SetPhoneNumberAction), setPhoneNumber),
+    takeEvery(getType(actions.SetCodeAction), setCode),
+    takeEvery(getType(actions.ResendCodeAction), resendCode),
     takeEvery(getType(actions.LogoutAction), logout)
   ]);
 }

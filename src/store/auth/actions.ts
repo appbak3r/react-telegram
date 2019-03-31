@@ -17,3 +17,14 @@ export const SetPhoneNumberSuccessAction = createAction(
 export const SetPhoneNumberFailureAction = createAction(
   types.SET_PHONE_NUMBER_FAILURE
 );
+
+export const SetCodeAction = createAction(
+  types.SET_CODE,
+  (action) => (code: string) => action({ code })
+);
+export const SetCodeSuccessAction = createAction(types.SET_CODE_SUCCESS);
+export const SetCodeFailureAction = createAction(types.SET_CODE_FAILURE);
+
+export const ResendCodeAction = createAction(types.RESEND_CODE);
+export const ResendCodeSuccessAction = createAction(types.RESEND_CODE_SUCCESS);
+export const ResendCodeFailureAction = createAction(types.RESEND_CODE_FAILURE);
