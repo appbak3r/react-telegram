@@ -1,0 +1,24 @@
+@import "~styles/base/variables";
+
+.rt-dialog-preview {
+  display: grid;
+  padding: $grid-offset-step * 2;
+  border-bottom: 1px solid var(--theme-color-gray);
+  position: relative;
+
+  &__unread {
+    background-color: var(--theme-color-primary);
+    position: absolute;
+    color: var(--theme-color-white);
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    right: $grid-offset-step * 2;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}

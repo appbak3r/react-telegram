@@ -27,6 +27,7 @@ export const TELEGRAM_MESSAGE_TYPES = {
   UPDATE_CONNECTION_STATE: "updateConnectionState",
   UPDATE_AUTHORIZATION_STATE: "updateAuthorizationState",
   UPDATE_OPTION: "updateOption",
+  UPDATE_CHAT_READ_INBOX: "updateChatReadInbox",
   READY: "ok"
 };
 

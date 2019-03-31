@@ -23,7 +23,7 @@ function* updateAuthorization(action: ActionType<typeof ReceiveMessageAction>) {
     }
 
     default: {
-      console.log("skip...");
+      // do nothing
     }
   }
 }

@@ -79,6 +79,8 @@ function* sendMessage(action: any) {
 }
 
 export const asyncSendMessage = (message: any): Promise<any> => {
+  console.warn("Send message:", message);
+
   return new Promise((resolve, reject) => {
     const id = uuid.v4();
 

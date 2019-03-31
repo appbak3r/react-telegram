@@ -2,12 +2,38 @@ import block from "bem-cn";
 import React, { PureComponent } from "react";
 import { Helmet } from "react-helmet";
 import { FormattedMessage } from "react-intl";
+import { connect } from "react-redux";
 import { Route, Switch } from "react-router";
+import { bindActionCreators, Dispatch } from "redux";
+import { GetChatsAction } from "../../../store/chats/actions";
 import { Chat } from "../../messenger/chat/Chat";
 import { Menu } from "../../messenger/menu/Menu";
 import { Settings } from "../../messenger/settings/Settings";
 
-export class Messenger extends PureComponent {
+type OwnProps = {};
+type DispatchProps = {
+  getChats: typeof GetChatsAction;
+};
+
+type MessengerProps = OwnProps & DispatchProps;
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return bindActionCreators(
+    {
+      getChats: GetChatsAction
+    },
+    dispatch
+  );
+};
+
+@((connect as any)(null, mapDispatchToProps))
+class ConnectedMessenger extends PureComponent<MessengerProps> {
+  componentDidMount(): void {
+    this.props.getChats({
+      limit: 25
+    });
+  }
+
   render() {
     const bem = block("rt-messenger");
 
@@ -35,3 +61,7 @@ export class Messenger extends PureComponent {
     );
   }
 }
+
+export const Messenger = (ConnectedMessenger as unknown) as React.ComponentClass<
+  OwnProps
+>;
