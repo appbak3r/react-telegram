@@ -11,6 +11,7 @@ export const AUTHORIZATION_STATES = {
   AUTHORIZED: "authorizationStateReady",
   LOGGING_OUT: "authorizationStateLoggingOut",
   LOADING: "authorizationStateWaitEncryptionKey",
+  WAIT_TDLIB: "authorizationStateWaitTdlibParameters",
   CLOSED: "authorizationStateClosed"
 };
 

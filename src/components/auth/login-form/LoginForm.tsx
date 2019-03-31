@@ -7,8 +7,7 @@ import { PhoneForm } from "../phone-form/PhoneForm";
 import "./styles.scss";
 
 type LoginFormProps = {
-  state: any;
-  onSubmit: any;
+  state: Nullable<string>;
 };
 
 export class LoginForm extends PureComponent<LoginFormProps> {
@@ -19,7 +18,7 @@ export class LoginForm extends PureComponent<LoginFormProps> {
   }
 
   renderForm(): React.ReactNode {
-    const { state, onSubmit } = this.props;
+    const { state } = this.props;
 
     switch (state) {
       case AUTHORIZATION_STATES.PHONE_NUMBER: {
@@ -31,7 +30,7 @@ export class LoginForm extends PureComponent<LoginFormProps> {
       }
 
       case AUTHORIZATION_STATES.PASSWORD: {
-        return <PasswordForm onSubmit={onSubmit} />;
+        return <PasswordForm />;
       }
 
       default: {

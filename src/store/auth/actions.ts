@@ -28,3 +28,14 @@ export const SetCodeFailureAction = createAction(types.SET_CODE_FAILURE);
 export const ResendCodeAction = createAction(types.RESEND_CODE);
 export const ResendCodeSuccessAction = createAction(types.RESEND_CODE_SUCCESS);
 export const ResendCodeFailureAction = createAction(types.RESEND_CODE_FAILURE);
+
+export const CheckPasswordAction = createAction(
+  types.CHECK_PASSWORD,
+  (action) => (password: string) => action({ password })
+);
+export const CheckPasswordSuccessAction = createAction(
+  types.CHECK_PASSWORD_SUCCESS
+);
+export const CheckPasswordFailureAction = createAction(
+  types.CHECK_PASSWORD_FAILURE
+);

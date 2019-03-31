@@ -30,15 +30,15 @@ type DispatchProps = {
   getCountryCode: typeof GetCountryCodeAction;
 };
 
-type AppProps = OwnProps & Partial<DispatchProps> & Partial<AppState>;
+type AppProps = OwnProps & DispatchProps & AppState;
 
 @((connect as any)(mapStateToProps, mapDispatchToProps, null, { pure: false }))
-export class App extends Component<AppProps> {
+class ConnectedApp extends Component<AppProps> {
   constructor(props: AppProps) {
     super(props);
 
     if (!props.countryCode) {
-      props.getCountryCode && props.getCountryCode();
+      props.getCountryCode();
     }
   }
 
@@ -54,3 +54,5 @@ export class App extends Component<AppProps> {
     );
   }
 }
+
+export const App = (ConnectedApp as unknown) as React.ComponentClass<OwnProps>;

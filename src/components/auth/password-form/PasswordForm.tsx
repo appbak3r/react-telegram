@@ -1,16 +1,45 @@
 import React, { PureComponent } from "react";
 import { Form } from "react-final-form";
+import { connect } from "react-redux";
+import { bindActionCreators, Dispatch } from "redux";
+import { CheckPasswordAction } from "../../../store/auth/actions";
+import { AuthState } from "../../../store/auth/reducer";
+import { RootState } from "../../../store/reducer";
+import { Input } from "../../forms/input/Input";
 
-interface PasswordFormProps {
-  onSubmit: (message: any) => void;
-}
+type FormValues = {
+  password?: string;
+};
 
-export class PasswordForm extends PureComponent<PasswordFormProps> {
-  onSubmit = (values: any) => {
-    this.props.onSubmit({
-      "@type": "checkAuthenticationPassword",
-      ...values
-    });
+type OwnProps = {};
+
+type StateProps = AuthState;
+
+type DispatchProps = {
+  checkPassword: typeof CheckPasswordAction;
+};
+
+type PasswordFormProps = OwnProps & StateProps & DispatchProps;
+
+const mapStateToProps = (state: RootState) => {
+  return state.auth;
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return bindActionCreators(
+    {
+      checkPassword: CheckPasswordAction
+    },
+    dispatch
+  );
+};
+
+@((connect as any)(mapStateToProps, mapDispatchToProps))
+class ConnectedPasswordForm extends PureComponent<PasswordFormProps> {
+  onSubmit = ({ password }: FormValues) => {
+    if (password) {
+      this.props.checkPassword(password);
+    }
   };
 
   render() {
@@ -21,6 +50,8 @@ export class PasswordForm extends PureComponent<PasswordFormProps> {
             <form onSubmit={handleSubmit} className="rt-password-form">
               <h1>Enter password</h1>
 
+              <Input name={"password"} type={"password"} />
+
               <button>submit</button>
             </form>
           );
@@ -29,3 +60,7 @@ export class PasswordForm extends PureComponent<PasswordFormProps> {
     );
   }
 }
+
+export const PasswordForm = (ConnectedPasswordForm as unknown) as React.ComponentType<
+  OwnProps
+>;

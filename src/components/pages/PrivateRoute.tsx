@@ -20,7 +20,7 @@ export const PrivateRoute: React.ComponentType<RouteProps> = connect(
     <Route
       {...restProps}
       render={(props) => {
-        if (!telegram.isReady || app.fetching) {
+        if (!telegram.isReady || app.fetching || auth.isConnecting) {
           return <AppLoading />;
         }
 

@@ -80,12 +80,28 @@ function* resendCode(): Generator {
   }
 }
 
+function* checkPassword(
+  action: ReturnType<typeof actions.CheckPasswordAction>
+): Generator {
+  try {
+    yield asyncSendMessage({
+      "@type": "checkAuthenticationPassword",
+      password: action.payload.password
+    });
+
+    yield put(actions.CheckPasswordSuccessAction());
+  } catch (error) {
+    yield put(actions.CheckPasswordFailureAction());
+  }
+}
+
 export function* authSaga() {
   return yield all([
     takeEvery(getType(ReceiveMessageAction), updateAuthorization),
     takeEvery(getType(actions.SetPhoneNumberAction), setPhoneNumber),
     takeEvery(getType(actions.SetCodeAction), setCode),
     takeEvery(getType(actions.ResendCodeAction), resendCode),
+    takeEvery(getType(actions.CheckPasswordAction), checkPassword),
     takeEvery(getType(actions.LogoutAction), logout)
   ]);
 }

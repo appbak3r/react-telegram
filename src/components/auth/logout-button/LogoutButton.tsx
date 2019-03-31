@@ -1,19 +1,23 @@
 import React, { PureComponent } from "react";
-import { bindActionCreators, Dispatch } from "redux";
-import { connect } from "react-redux";
-
-import { Button } from "../../common/button/Button";
-import { LogoutAction } from "../../../store/auth/actions";
 import { FormattedMessage } from "react-intl";
+import { connect } from "react-redux";
+import { bindActionCreators, Dispatch } from "redux";
+import { LogoutAction } from "../../../store/auth/actions";
+import { AuthState } from "../../../store/auth/reducer";
+import { RootState } from "../../../store/reducer";
+import { Button } from "../../common/button/Button";
 
-type OwnProps = {};
-
-type DispatchProps = {
-  logout: typeof LogoutAction;
+type OwnProps = {
   title?: string | React.ReactNode;
 };
 
-type LogoutButtonProps = OwnProps & Partial<DispatchProps>;
+type StateProps = AuthState;
+
+type DispatchProps = {
+  logout: typeof LogoutAction;
+};
+
+type LogoutButtonProps = OwnProps & DispatchProps & StateProps;
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return bindActionCreators(
@@ -24,12 +28,19 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   );
 };
 
-@((connect as any)(null, mapDispatchToProps))
-export class LogoutButton extends PureComponent<LogoutButtonProps> {
+const mapStateToProps = (state: RootState) => {
+  return state.auth;
+};
+
+@((connect as any)(mapStateToProps, mapDispatchToProps))
+class ConnectedLogoutButton extends PureComponent<LogoutButtonProps> {
   render() {
-    const { title } = this.props;
+    const { title, logout, isLoggingOut } = this.props;
     return (
-      <Button className="ri-logout-button" onClick={this.props.logout}>
+      <Button
+        className="ri-logout-button"
+        onClick={logout}
+        loading={isLoggingOut}>
         {title || (
           <FormattedMessage
             id={"components.logout-button.title"}
@@ -40,3 +51,7 @@ export class LogoutButton extends PureComponent<LogoutButtonProps> {
     );
   }
 }
+
+export const LogoutButton = (ConnectedLogoutButton as unknown) as React.ComponentType<
+  OwnProps
+>;

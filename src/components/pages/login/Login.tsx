@@ -4,23 +4,24 @@ import { Helmet } from "react-helmet";
 import { FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
-import { bindActionCreators, Dispatch } from "redux";
 import { AuthState } from "../../../store/auth/reducer";
 import { RootState } from "../../../store/reducer";
-import { SendMessageAction } from "../../../store/telegram/actions";
 import { LoginForm } from "../../auth/login-form/LoginForm";
 import "./styles.scss";
 
 type OwnProps = {};
-type DispatchProps = { sendMessage: typeof SendMessageAction };
-type LoginProps = OwnProps & Partial<AuthState & DispatchProps>;
+type LoginProps = OwnProps & AuthState;
 
-@((connect as any)(mapStateToProps, mapDispatchToProps))
-export class Login extends Component<LoginProps> {
+const mapStateToProps = (state: RootState): AuthState => {
+  return state.auth;
+};
+
+@((connect as any)(mapStateToProps))
+class ConnectedLogin extends Component<LoginProps> {
   render() {
     const bem = block("rt-login");
 
-    const { authState, isAuthorized, sendMessage } = this.props;
+    const { authState, isAuthorized } = this.props;
 
     if (isAuthorized) {
       return <Redirect to={"/"} />;
@@ -39,17 +40,13 @@ export class Login extends Component<LoginProps> {
         </FormattedMessage>
 
         <div className={bem("body")}>
-          <LoginForm state={authState} onSubmit={sendMessage} />
+          <LoginForm state={authState} />
         </div>
       </div>
     );
   }
 }
 
-function mapDispatchToProps(dispatch: Dispatch) {
-  return bindActionCreators({ sendMessage: SendMessageAction }, dispatch);
-}
-
-function mapStateToProps(state: RootState): AuthState {
-  return state.auth;
-}
+export const Login = (ConnectedLogin as unknown) as React.ComponentType<
+  OwnProps
+>;

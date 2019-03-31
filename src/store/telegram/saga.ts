@@ -48,8 +48,6 @@ function* subscribeToTelegramWorker() {
 function* dispatchMessage(action: any) {
   const message = action.payload.data;
 
-  console.log(message);
-
   if (message && message["@extra"]) {
     const { messageId } = message["@extra"];
     const promise = promises.get(messageId);
@@ -120,6 +118,11 @@ function loadInitialData(action: any) {
           }
         });
       }
+
+      break;
+    }
+    default: {
+      // add other side effects
     }
   }
 }

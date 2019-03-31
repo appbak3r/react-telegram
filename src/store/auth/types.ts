@@ -15,3 +15,7 @@ export const SET_CODE_FAILURE = "@rt/auth/set-code/failure";
 export const RESEND_CODE = "@rt/auth/resend-code/fetching";
 export const RESEND_CODE_SUCCESS = "@rt/auth/resend-code/success";
 export const RESEND_CODE_FAILURE = "@rt/auth/resend-code/failure";
+
+export const CHECK_PASSWORD = "@rt/auth/check-password/fetching";
+export const CHECK_PASSWORD_SUCCESS = "@rt/auth/check-password/success";
+export const CHECK_PASSWORD_FAILURE = "@rt/auth/check-password/failure";

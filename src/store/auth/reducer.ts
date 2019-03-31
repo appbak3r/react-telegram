@@ -10,6 +10,8 @@ import * as actions from "./actions";
 export type AuthState = {
   readonly isAuthorized: boolean;
   readonly isFetching: boolean;
+  readonly isConnecting: boolean;
+  readonly isLoggingOut: boolean;
   readonly error: Nullable<any>;
   readonly authState: Nullable<string>;
   readonly isRegistered: boolean;
@@ -21,6 +23,8 @@ export type AuthAction = ActionType<typeof actions>;
 const initialState: AuthState = {
   isAuthorized: false,
   isRegistered: false,
+  isConnecting: true,
+  isLoggingOut: false,
   isFetching: false,
   error: null,
   authState: null
@@ -34,14 +38,14 @@ export const authReducer = (
     case getType(actions.LogoutAction): {
       return {
         ...state,
-        isFetching: true
+        isLoggingOut: true
       };
     }
 
     case getType(actions.LogoutSuccessAction): {
       return {
         ...state,
-        isFetching: false,
+        isLoggingOut: false,
         isAuthorized: false
       };
     }
@@ -49,7 +53,7 @@ export const authReducer = (
     case getType(actions.LogoutFailureAction): {
       return {
         ...state,
-        isFetching: false
+        isLoggingOut: false
       };
     }
 
@@ -91,19 +95,26 @@ export const authReducer = (
         message["@type"] === TELEGRAM_MESSAGE_TYPES.UPDATE_AUTHORIZATION_STATE
       ) {
         switch (message.authorization_state["@type"]) {
-          case AUTHORIZATION_STATES.CODE: {
+          case AUTHORIZATION_STATES.LOADING:
+          case AUTHORIZATION_STATES.WAIT_TDLIB: {
             return {
               ...state,
-              data: message.authorization_state.code_info,
-              isRegistered: message.authorization_state.is_registered,
-              authState: message.authorization_state["@type"],
-              isFetching: false
+              isConnecting: true
+            };
+          }
+
+          case AUTHORIZATION_STATES.AUTHORIZED: {
+            return {
+              ...state,
+              isConnecting: false,
+              isAuthorized: true
             };
           }
 
           default: {
             return {
               ...state,
+              isConnecting: false,
               authState: message.authorization_state["@type"]
             };
           }
