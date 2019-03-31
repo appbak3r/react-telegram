@@ -1,19 +1,21 @@
 import block from 'bem-cn';
-import React, { ButtonHTMLAttributes, PureComponent } from 'react';
 import classNames from 'classnames';
-
+import React, { ButtonHTMLAttributes, PureComponent } from 'react';
+import { SpinnerIcon } from '../icons/SpinnerIcon';
 import './styles.scss';
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
+type ButtonProps = {
+  loading?: boolean;
+} & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export class Button extends PureComponent<ButtonProps> {
   render () {
-    const { className, ...restProps } = this.props;
+    const { className, loading, ...restProps } = this.props;
     
     const bem = block('rt-button');
     
     const rootClassNames = classNames({
-      [bem()]: true,
+      [bem.is({ loading: Boolean(loading) })]: true,
       [className as string]: className,
     });
     
@@ -21,6 +23,7 @@ export class Button extends PureComponent<ButtonProps> {
       <button { ...restProps }
               className={ rootClassNames }>
         { this.props.children }
+        { loading && <SpinnerIcon className={ bem('loading-icon') }/> }
       </button>
     );
   }

@@ -24,7 +24,7 @@ export class LoginForm extends PureComponent<LoginFormProps> {
     
     switch (state) {
       case AUTHORIZATION_STATES.PHONE_NUMBER: {
-        return <PhoneForm onSubmit={ onSubmit }/>;
+        return <PhoneForm/>;
       }
       
       case AUTHORIZATION_STATES.CODE: {

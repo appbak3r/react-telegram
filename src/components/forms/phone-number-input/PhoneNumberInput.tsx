@@ -1,5 +1,5 @@
 import block from 'bem-cn';
-import React, { InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes, PureComponent } from 'react';
 import { Field } from 'react-final-form';
 import PhoneInput from 'react-phone-number-input';
 import { connect } from 'react-redux';
@@ -19,7 +19,7 @@ const mapStateToProps = (state: RootState) => {
 };
 
 @(connect as any)(mapStateToProps)
-export class PhoneNumberInput extends React.PureComponent<PhoneNumberInputProps> {
+export class PhoneNumberInput extends PureComponent<PhoneNumberInputProps> {
   private ref = React.createRef<any>();
   
   componentDidMount (): void {

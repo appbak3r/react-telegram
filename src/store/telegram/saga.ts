@@ -1,6 +1,7 @@
 import { all, takeEvery, call, put } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import { getType } from 'typesafe-actions';
+import uuid from 'uuid';
 
 import { AUTHORIZATION_STATES } from './types';
 import { ReceiveMessageAction, SendMessageAction, SendMessageFailureAction, SendMessageSuccessAction } from './actions';
@@ -8,6 +9,11 @@ import { ReceiveMessageAction, SendMessageAction, SendMessageFailureAction, Send
 const TelegramWorker = require('../../services/telegram.worker');
 
 let worker: any;
+
+const promises = new Map<string, {
+  resolve: any,
+  reject: any,
+}>();
 
 function createWorker () {
   worker = new TelegramWorker();
@@ -30,6 +36,23 @@ function* subscribeToTelegramWorker () {
 }
 
 function* dispatchMessage (action: any) {
+  const message = action.payload.data;
+  
+  console.log(message);
+  
+  if (message && message['@extra']) {
+    const { messageId } = message['@extra'];
+    const promise = promises.get(messageId);
+    
+    if (promise) {
+      if (message['@type'] === 'error') {
+        promise.reject(action);
+      } else {
+        promise.resolve(action);
+      }
+    }
+  }
+  
   return yield put(action);
 }
 
@@ -49,21 +72,21 @@ function* sendMessage (action: any) {
 
 export const asyncSendMessage = (message: any): Promise<any> => {
   return new Promise((resolve, reject) => {
-    const onMessageReceived = (event: any) => {
-      worker.removeEventListener('message', onMessageReceived);
-      
-      if (event.data['@type'] === 'error') {
-        return reject(event.data);
-      }
-      
-      return resolve(event.data);
-    };
+    const id = uuid.v4();
     
-    worker.addEventListener('message', onMessageReceived);
+    promises.set(id, {
+      resolve,
+      reject,
+    });
     
     worker.postMessage({
       type: 'send',
-      payload: message,
+      payload: {
+        ...message,
+        '@extra': {
+          messageId: id,
+        },
+      },
     });
   });
 };

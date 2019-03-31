@@ -1,26 +1,43 @@
 import React, { PureComponent } from 'react';
 import { Form } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
+import { SetPhoneNumberAction } from '../../../store/auth/actions';
+import { AuthState } from '../../../store/auth/reducer';
+import { RootState } from '../../../store/reducer';
 import { Button } from '../../common/button/Button';
 import { Logo } from '../../common/logo/Logo';
 import { PhoneNumberInput } from '../../forms/phone-number-input/PhoneNumberInput';
 import './styles.scss';
 
-type PhoneFormProps = {
-  onSubmit: (message: any) => void;
-}
+type OwnProps = {};
 
-type PhoneFormState = {}
+type PhoneFormProps = AuthState & DispatchProps & OwnProps;
 
-export class PhoneForm extends PureComponent<PhoneFormProps, PhoneFormState> {
+type DispatchProps = {
+  setPhoneNumber: typeof SetPhoneNumberAction,
+};
+
+const mapStateToProps = (state: RootState): AuthState => {
+  return state.auth;
+};
+
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
+  return bindActionCreators({
+    setPhoneNumber: SetPhoneNumberAction,
+  }, dispatch);
+};
+
+@(connect as any)(mapStateToProps, mapDispatchToProps)
+class ConnectedPhoneForm extends PureComponent<PhoneFormProps> {
   onSubmit = (values: any) => {
-    this.props.onSubmit({
-      '@type': 'setAuthenticationPhoneNumber',
-      phone_number: values.phone,
-    });
+    this.props.setPhoneNumber(values.phone);
   };
   
   render () {
+    const { isFetching } = this.props;
+    
     return (
       <Form onSubmit={ this.onSubmit }>
         { ({ handleSubmit }) => {
@@ -33,8 +50,9 @@ export class PhoneForm extends PureComponent<PhoneFormProps, PhoneFormState> {
               
               <div className='rt-phone-form__body'>
                 <PhoneNumberInput name={ 'phone' }/>
-  
-                <Button className='rt-phone-form__submit rt-button--primary'>
+                
+                <Button className='rt-phone-form__submit rt-button--primary'
+                        loading={ isFetching }>
                   <FormattedMessage id={ 'components.phone-form.submit' }
                                     defaultMessage={ 'Next' }/>
                 </Button>
@@ -46,3 +64,5 @@ export class PhoneForm extends PureComponent<PhoneFormProps, PhoneFormState> {
     );
   }
 }
+
+export const PhoneForm = ConnectedPhoneForm as unknown as React.ComponentType<OwnProps>;

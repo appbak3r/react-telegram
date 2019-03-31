@@ -1,11 +1,11 @@
 import { ActionType, getType } from 'typesafe-actions';
-
 import * as actions from './actions';
-import { TELEGRAM_CONNECTION_STATE, TELEGRAM_MESSAGE_TYPES } from './types';
+import { TELEGRAM_CONNECTION_STATE, TELEGRAM_MESSAGE_TYPES, TelegramOptions } from './types';
 
 export type TelegramState = {
   readonly isConnecting: boolean;
   readonly isReady: boolean;
+  readonly options: Partial<TelegramOptions>;
 };
 
 export type TelegramAction = ActionType<typeof actions>
@@ -13,6 +13,7 @@ export type TelegramAction = ActionType<typeof actions>
 const initialState: TelegramState = {
   isConnecting: true,
   isReady: false,
+  options: {},
 };
 
 export const telegramReducer = (state = initialState, action: TelegramAction): TelegramState => {
@@ -52,6 +53,17 @@ export const telegramReducer = (state = initialState, action: TelegramAction): T
           }
           
           return state;
+        }
+        
+        case TELEGRAM_MESSAGE_TYPES.UPDATE_OPTION: {
+          const { options } = state;
+          
+          options[message.name] = message.value.value;
+          
+          return {
+            ...state,
+            options: options,
+          };
         }
         
         default: {

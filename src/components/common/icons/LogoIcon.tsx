@@ -1,5 +1,5 @@
-import { makeIcon } from '../../../utils/makeIcon';
-
+import { FunctionComponent } from 'react';
+import { IconProps, makeIcon } from '../../../utils/makeIcon';
 import TelegramLogo from '../../../assets/icons/logo.svg';
 
-export const LogoIcon = ({ className }: { className?: string }) => makeIcon(TelegramLogo.id, className);
+export const LogoIcon: FunctionComponent<IconProps> = ({ className }) => makeIcon(TelegramLogo.id, className);

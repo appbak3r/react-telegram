@@ -1,8 +1,12 @@
 import { createAction } from 'typesafe-actions';
-import { LOGIN_SUCCESS, LOGOUT_FAILURE, LOGOUT_FETCHING, LOGOUT_SUCCESS } from './types';
+import * as types from './types';
 
-export const LogoutAction        = createAction(LOGOUT_FETCHING);
-export const LogoutSuccessAction = createAction(LOGOUT_SUCCESS);
-export const LogoutFailureAction = createAction(LOGOUT_FAILURE);
+export const LogoutAction        = createAction(types.LOGOUT_FETCHING);
+export const LogoutSuccessAction = createAction(types.LOGOUT_SUCCESS);
+export const LogoutFailureAction = createAction(types.LOGOUT_FAILURE);
 
-export const LoginSuccessAction = createAction(LOGIN_SUCCESS);
+export const LoginSuccessAction = createAction(types.LOGIN_SUCCESS);
+
+export const SetPhoneNumberAction        = createAction(types.SET_PHONE_NUMBER, (action) => (phone: string) => action({ phone }));
+export const SetPhoneNumberSuccessAction = createAction(types.SET_PHONE_NUMBER_SUCCESS);
+export const SetPhoneNumberFailureAction = createAction(types.SET_PHONE_NUMBER_FAILURE);

@@ -1,5 +1,5 @@
 import block from 'bem-cn';
-import React, { SelectHTMLAttributes } from 'react';
+import React, { PureComponent, SelectHTMLAttributes } from 'react';
 import Select from 'react-select';
 
 type Option = {
@@ -16,7 +16,7 @@ type PhoneNumberCountrySelectProps = {
 
 const NO_COUNTRY = 'ZZ';
 
-export class PhoneNumberCountrySelect extends React.PureComponent<PhoneNumberCountrySelectProps> {
+export class PhoneNumberCountrySelect extends PureComponent<PhoneNumberCountrySelectProps> {
   static defaultProps: Partial<PhoneNumberCountrySelectProps> = {
     value: NO_COUNTRY,
   };

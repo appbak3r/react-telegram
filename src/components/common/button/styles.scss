@@ -4,11 +4,32 @@
   border-radius: $grid-offset-step;
   border: 0;
   padding: $grid-offset-step * 2 $grid-offset-step * 8;
+  position: relative;
+
+  &__loading-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 30px;
+  }
+
+  &.is-loading {
+    color: transparent;
+    pointer-events: none;
+  }
 }
 
 .rt-button {
   &--primary {
     background-color: var(--theme-color-primary);
     color: var(--theme-color-white);
+  }
+
+  &--primary & {
+    &__loading-icon {
+      fill: var(--theme-color-white);
+    }
   }
 }

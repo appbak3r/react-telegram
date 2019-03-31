@@ -3,6 +3,7 @@ import { Form } from 'react-final-form';
 import { Button } from '../../common/button/Button';
 import { FormattedMessage } from 'react-intl';
 import { Input } from '../../forms/input/Input';
+import { LogoutButton } from '../logout-button/LogoutButton';
 
 interface CodeFormProps {
   onSubmit: (message: any) => void;
@@ -41,6 +42,8 @@ export class CodeForm extends PureComponent<CodeFormProps> {
                 <FormattedMessage id='components.code-form.submit'
                                   defaultMessage={ 'Next' }/>
               </Button>
+              
+              <LogoutButton/>
             </form>
           );
         } }
