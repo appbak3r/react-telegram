@@ -1,9 +1,10 @@
+import block from "bem-cn";
 import React, { PureComponent } from "react";
-
-import { PhoneForm } from "../phone-form/PhoneForm";
+import { AUTHORIZATION_STATES } from "../../../store/telegram/types";
 import { CodeForm } from "../code-form/CodeForm";
 import { PasswordForm } from "../password-form/PasswordForm";
-import { AUTHORIZATION_STATES } from "../../../store/telegram/types";
+import { PhoneForm } from "../phone-form/PhoneForm";
+import "./styles.scss";
 
 type LoginFormProps = {
   state: any;
@@ -12,7 +13,9 @@ type LoginFormProps = {
 
 export class LoginForm extends PureComponent<LoginFormProps> {
   render() {
-    return <div className="rt-login-form">{this.renderForm()}</div>;
+    const bem = block("rt-login-form");
+
+    return <div className={bem()}>{this.renderForm()}</div>;
   }
 
   renderForm(): React.ReactNode {

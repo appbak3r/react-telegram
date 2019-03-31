@@ -19,7 +19,24 @@ export const configureStore = (preloadedState = {}) => {
     applyMiddleware(logger, sagaMiddleware)
   );
 
-  sagaMiddleware.run(rootSaga);
+  let sagaTask = sagaMiddleware.run(rootSaga);
+
+  if ((module as any).hot) {
+    (module as any).hot.accept("./reducer", () => {
+      const nextRootReducer = require("./reducer");
+      store.replaceReducer(nextRootReducer);
+    });
+
+    (module as any).hot.accept("./saga", () => {
+      const nextRootSaga = require("./saga");
+
+      sagaTask.cancel();
+
+      sagaTask.done.then(() => {
+        sagaTask = sagaMiddleware.run(nextRootSaga);
+      });
+    });
+  }
 
   return store;
 };

@@ -8,7 +8,7 @@ import { Login } from "./components/pages/login/Login";
 import { Messenger } from "./components/pages/messenger/Messenger";
 import { PrivateRoute } from "./components/pages/PrivateRoute";
 import { GetCountryCodeAction } from "./store/app/actions";
-import { AuthState } from "./store/auth/reducer";
+import { AppState } from "./store/app/reducer";
 import { RootState } from "./store/reducer";
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
@@ -20,8 +20,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   );
 };
 
-const mapStateToProps = (state: RootState) => {
-  return state.auth;
+const mapStateToProps = (state: RootState): AppState => {
+  return state.app;
 };
 
 type OwnProps = {};
@@ -30,14 +30,16 @@ type DispatchProps = {
   getCountryCode: typeof GetCountryCodeAction;
 };
 
-type AppProps = OwnProps & Partial<DispatchProps> & Partial<AuthState>;
+type AppProps = OwnProps & Partial<DispatchProps> & Partial<AppState>;
 
 @((connect as any)(mapStateToProps, mapDispatchToProps, null, { pure: false }))
 export class App extends Component<AppProps> {
   constructor(props: AppProps) {
     super(props);
 
-    props.getCountryCode && props.getCountryCode();
+    if (!props.countryCode) {
+      props.getCountryCode && props.getCountryCode();
+    }
   }
 
   render(): React.ReactNode {

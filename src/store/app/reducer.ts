@@ -3,7 +3,7 @@ import * as actions from "./actions";
 
 export type AppAction = ActionType<typeof actions>;
 
-type AppState = {
+export type AppState = {
   fetching: boolean;
   countryCode: Nullable<string>;
 };

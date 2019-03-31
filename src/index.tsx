@@ -32,11 +32,11 @@ const render = (Component: ComponentClass) => {
 render(App);
 
 if ((module as any).hot) {
-  (module as any).hot.accept();
+  (module as any).hot.accept("./App", () => {
+    const NextApp = require("./App").App;
 
-  const NextApp = require("./App").App;
-
-  render(NextApp);
+    render(NextApp);
+  });
 }
 
 enableTabMode();

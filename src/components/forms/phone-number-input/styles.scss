@@ -5,13 +5,20 @@
     display: grid;
 
     align-items: center;
-    grid-column-gap: $grid-offset-step;
+    grid-column-gap: $grid-offset-step * 2;
     grid-row-gap: $grid-offset-step * 2;
+    grid-template-columns: 25px auto;
     grid-template-areas: "select select" "icon input";
   }
 
   .react-phone-number-input__icon {
     grid-area: icon;
+    display: flex;
+    align-items: center;
+  }
+
+  .react-phone-number-input__icon-image {
+    width: 100%;
   }
 
   .rt-phone-number-country-select {

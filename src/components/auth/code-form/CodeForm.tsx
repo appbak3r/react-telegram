@@ -1,3 +1,4 @@
+import block from "bem-cn";
 import React, { PureComponent } from "react";
 import { Form } from "react-final-form";
 import { connect } from "react-redux";
@@ -9,6 +10,7 @@ import { Button } from "../../common/button/Button";
 import { FormattedMessage } from "react-intl";
 import { Input } from "../../forms/input/Input";
 import { LogoutButton } from "../logout-button/LogoutButton";
+import "./styles.scss";
 
 type StateProps = AuthState;
 
@@ -52,32 +54,50 @@ class ConnectedCodeForm extends PureComponent<CodeFormProps> {
   };
 
   render() {
+    const bem = block("rt-code-form");
+
     return (
       <Form onSubmit={this.onSubmit}>
         {({ handleSubmit }) => {
           return (
-            <form onSubmit={handleSubmit} className="rt-code-form">
-              <h1>Enter code</h1>
-
-              <Input name="code" />
-
-              <Button type="button" onClick={this.resendCode}>
+            <form onSubmit={handleSubmit} className={bem()}>
+              <h1 className="rt-h1">
                 <FormattedMessage
-                  id="components.code-form.resend"
-                  defaultMessage={"Resend"}
+                  id={"components.code-form.title"}
+                  defaultMessage={"Enter code"}
                 />
-              </Button>
+              </h1>
 
-              <Button
-                className="rt-button--primary"
-                loading={this.props.isFetching}>
-                <FormattedMessage
-                  id="components.code-form.submit"
-                  defaultMessage={"Next"}
-                />
-              </Button>
+              <div className={bem("input")}>
+                <Input name="code" type="number" autoFocus={true} />
+              </div>
 
-              <LogoutButton />
+              <div className={bem("actions")}>
+                <Button type="button" onClick={this.resendCode}>
+                  <FormattedMessage
+                    id="components.code-form.resend"
+                    defaultMessage={"Resend"}
+                  />
+                </Button>
+
+                <Button
+                  className="rt-button--primary"
+                  loading={this.props.isFetching}>
+                  <FormattedMessage
+                    id="components.code-form.submit"
+                    defaultMessage={"Next"}
+                  />
+                </Button>
+              </div>
+
+              <LogoutButton
+                title={
+                  <FormattedMessage
+                    id={"components.code-form.logout"}
+                    defaultMessage={"Use different number?"}
+                  />
+                }
+              />
             </form>
           );
         }}
