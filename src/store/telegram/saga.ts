@@ -1,69 +1,79 @@
-import { all, takeEvery, call, put } from 'redux-saga/effects';
-import { eventChannel } from 'redux-saga';
-import { getType } from 'typesafe-actions';
-import uuid from 'uuid';
+import { all, takeEvery, call, put } from "redux-saga/effects";
+import { eventChannel } from "redux-saga";
+import { getType } from "typesafe-actions";
+import uuid from "uuid";
 
-import { AUTHORIZATION_STATES } from './types';
-import { ReceiveMessageAction, SendMessageAction, SendMessageFailureAction, SendMessageSuccessAction } from './actions';
+import { AUTHORIZATION_STATES } from "./types";
+import {
+  ReceiveMessageAction,
+  SendMessageAction,
+  SendMessageFailureAction,
+  SendMessageSuccessAction
+} from "./actions";
 
-const TelegramWorker = require('../../services/telegram.worker');
+const TelegramWorker = require("../../services/telegram.worker");
 
 let worker: any;
 
-const promises = new Map<string, {
-  resolve: any,
-  reject: any,
-}>();
+const promises = new Map<
+  string,
+  {
+    resolve: any;
+    reject: any;
+  }
+>();
 
-function createWorker () {
+function createWorker() {
   worker = new TelegramWorker();
-  
+
   return eventChannel((emit: any) => {
     worker.onmessage = (event: any) => {
-      emit(ReceiveMessageAction({
-        data: event.data,
-      }));
+      emit(
+        ReceiveMessageAction({
+          data: event.data
+        })
+      );
     };
-    
+
     return worker.terminate;
   });
 }
 
-function* subscribeToTelegramWorker () {
+function* subscribeToTelegramWorker() {
   const channel = yield createWorker();
-  
+
   yield takeEvery(channel, dispatchMessage);
 }
 
-function* dispatchMessage (action: any) {
+function* dispatchMessage(action: any) {
   const message = action.payload.data;
-  
+
   console.log(message);
-  
-  if (message && message['@extra']) {
-    const { messageId } = message['@extra'];
+
+  if (message && message["@extra"]) {
+    const { messageId } = message["@extra"];
     const promise = promises.get(messageId);
-    
+
     if (promise) {
-      if (message['@type'] === 'error') {
+      if (message["@type"] === "error") {
         promise.reject(action);
       } else {
         promise.resolve(action);
       }
     }
   }
-  
+
   return yield put(action);
 }
 
-function* sendMessage (action: any) {
+function* sendMessage(action: any) {
   if (!worker) {
-    throw new Error('Worker is not yet ready');
+    throw new Error("Worker is not yet ready");
   }
-  
+
   try {
     yield asyncSendMessage(action.payload);
-    
+
     put(SendMessageSuccessAction());
   } catch {
     put(SendMessageFailureAction());
@@ -73,37 +83,40 @@ function* sendMessage (action: any) {
 export const asyncSendMessage = (message: any): Promise<any> => {
   return new Promise((resolve, reject) => {
     const id = uuid.v4();
-    
+
     promises.set(id, {
       resolve,
-      reject,
+      reject
     });
-    
+
     worker.postMessage({
-      type: 'send',
+      type: "send",
       payload: {
         ...message,
-        '@extra': {
-          messageId: id,
-        },
-      },
+        "@extra": {
+          messageId: id
+        }
+      }
     });
   });
 };
 
-function loadInitialData (action: any) {
-  switch (action.payload.data['@type']) {
-    case 'updateAuthorizationState': {
-      if (action.payload.data.authorization_state['@type'] === AUTHORIZATION_STATES.AUTHORIZED) {
+function loadInitialData(action: any) {
+  switch (action.payload.data["@type"]) {
+    case "updateAuthorizationState": {
+      if (
+        action.payload.data.authorization_state["@type"] ===
+        AUTHORIZATION_STATES.AUTHORIZED
+      ) {
         worker.postMessage({
-          type: 'send',
+          type: "send",
           payload: {
-            '@type': 'setOption',
-            name: 'online',
+            "@type": "setOption",
+            name: "online",
             value: {
-              '@type': 'optionValueBoolean',
-              value: true,
-            },
+              "@type": "optionValueBoolean",
+              value: true
+            }
           }
         });
       }
@@ -111,7 +124,7 @@ function loadInitialData (action: any) {
   }
 }
 
-export function* telegramSaga () {
+export function* telegramSaga() {
   return yield all([
     call(subscribeToTelegramWorker),
     takeEvery(getType(ReceiveMessageAction), loadInitialData),

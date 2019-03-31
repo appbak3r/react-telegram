@@ -4,14 +4,19 @@
   font-size: var(--theme-font-size);
 }
 
-#root, .rt-app {
+#root,
+.rt-app {
   height: 100%;
 }
 
 // [ TAB MODE ]
 //-------------------------------------
 body:not(.rt-tab-mode) {
-  a, select, input, textarea, button {
+  a,
+  select,
+  input,
+  textarea,
+  button {
     &:focus {
       outline: none;
     }

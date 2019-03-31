@@ -1,7 +1,7 @@
-import { ActionType, getType } from 'typesafe-actions';
-import * as actions from './actions';
+import { ActionType, getType } from "typesafe-actions";
+import * as actions from "./actions";
 
-export type AppAction = ActionType<typeof actions>
+export type AppAction = ActionType<typeof actions>;
 
 type AppState = {
   fetching: boolean;
@@ -10,35 +10,38 @@ type AppState = {
 
 const initialState: AppState = {
   fetching: false,
-  countryCode: 'US',
+  countryCode: "US"
 };
 
-export const appReducer = (state = initialState, action: AppAction): AppState => {
+export const appReducer = (
+  state = initialState,
+  action: AppAction
+): AppState => {
   switch (action.type) {
     case getType(actions.GetCountryCodeAction): {
       return {
         ...state,
-        fetching: true,
+        fetching: true
       };
     }
-    
+
     case getType(actions.GetCountryCodeSuccessAction): {
       const countryCode = action.payload.countryCode.toUpperCase();
-      
+
       return {
         ...state,
         fetching: false,
-        countryCode: countryCode || initialState.countryCode,
+        countryCode: countryCode || initialState.countryCode
       };
     }
-    
+
     case getType(actions.GetCountryCodeFailureAction): {
       return {
         ...state,
-        fetching: false,
+        fetching: false
       };
     }
-    
+
     default: {
       return state;
     }

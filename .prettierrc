@@ -1,0 +1,5 @@
+{
+  "jsxBracketSameLine": true,
+  "arrowParens": "always",
+  "bracketSpacing": true
+}

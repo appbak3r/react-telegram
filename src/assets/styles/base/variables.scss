@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Lato:400,700');
+@import url("https://fonts.googleapis.com/css?family=Lato:400,700");
 
 $grid-offset-step: 5px;
 
 :root {
-  --theme-main-font: 'Lato', sans-serif;
+  --theme-main-font: "Lato", sans-serif;
   --theme-font-size: 16px;
   --theme-text-color: #222222;
   --theme-text-color-light: #{lighten(#222222, 30%)};

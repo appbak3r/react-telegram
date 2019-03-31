@@ -1,5 +1,5 @@
 @mixin wavesBackground {
-  background-image: url('~!url-loader!../../../assets/icons/bg.svg');
+  background-image: url("~!url-loader!../../../assets/icons/bg.svg");
   background-repeat: no-repeat;
   background-position: bottom;
   background-size: contain;

@@ -1,14 +1,13 @@
-@import '~styles/base/variables';
+@import "~styles/base/variables";
 
 .rt-phone-number-input {
-
   .react-phone-number-input__row {
     display: grid;
 
     align-items: center;
     grid-column-gap: $grid-offset-step;
     grid-row-gap: $grid-offset-step * 2;
-    grid-template-areas: 'select select' 'icon input';
+    grid-template-areas: "select select" "icon input";
   }
 
   .react-phone-number-input__icon {

@@ -1,30 +1,32 @@
-import React, { PureComponent } from 'react';
-import { bindActionCreators, Dispatch } from 'redux';
-import { connect } from 'react-redux';
+import React, { PureComponent } from "react";
+import { bindActionCreators, Dispatch } from "redux";
+import { connect } from "react-redux";
 
-import { Button } from '../../common/button/Button';
-import { LogoutAction } from '../../../store/auth/actions';
+import { Button } from "../../common/button/Button";
+import { LogoutAction } from "../../../store/auth/actions";
 
 type OwnProps = {};
 
 type DispatchProps = {
-  logout: typeof LogoutAction
+  logout: typeof LogoutAction;
 };
 
 type LogoutButtonProps = OwnProps & Partial<DispatchProps>;
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
-  return bindActionCreators({
-    logout: LogoutAction
-  }, dispatch);
+  return bindActionCreators(
+    {
+      logout: LogoutAction
+    },
+    dispatch
+  );
 };
 
-@(connect as any)(null, mapDispatchToProps)
+@((connect as any)(null, mapDispatchToProps))
 export class LogoutButton extends PureComponent<LogoutButtonProps> {
-  render () {
+  render() {
     return (
-      <Button className='ri-logout-button'
-              onClick={ this.props.logout }>
+      <Button className="ri-logout-button" onClick={this.props.logout}>
         Logout
       </Button>
     );

@@ -1,13 +1,13 @@
-import { applyMiddleware, createStore } from 'redux';
-import { createLogger } from 'redux-logger';
-import createSagaMiddleware from 'redux-saga';
+import { applyMiddleware, createStore } from "redux";
+import { createLogger } from "redux-logger";
+import createSagaMiddleware from "redux-saga";
 
-import { environment } from '../config/environment';
-import { rootReducer } from './reducer';
-import { rootSaga } from './saga';
+import { environment } from "../config/environment";
+import { rootReducer } from "./reducer";
+import { rootSaga } from "./saga";
 
 const logger = createLogger({
-  predicate: () => environment.isLoggerEnabled,
+  predicate: () => environment.isLoggerEnabled
 });
 
 const sagaMiddleware = createSagaMiddleware();
@@ -18,8 +18,8 @@ export const configureStore = (preloadedState = {}) => {
     preloadedState,
     applyMiddleware(logger, sagaMiddleware)
   );
-  
+
   sagaMiddleware.run(rootSaga);
-  
+
   return store;
 };

@@ -1,5 +1,5 @@
-import { environmentDefault } from './environmentDefault';
-import { environmentProduction } from './environmentProduction';
+import { environmentDefault } from "./environmentDefault";
+import { environmentProduction } from "./environmentProduction";
 
 export interface IEnvironment {
   apiId: string;
@@ -9,11 +9,11 @@ export interface IEnvironment {
 }
 
 export let environment: IEnvironment = {
-  ...environmentDefault,
+  ...environmentDefault
 };
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   environment = {
-    ...environmentProduction,
+    ...environmentProduction
   };
 }
