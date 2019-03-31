@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { ChatsState } from "../../../store/chats/reducer";
 import { RootState } from "../../../store/reducer";
 import { DialogPreview } from "./dialog-preview/DialogPreview";
+import "./styles.scss";
 
 type OwnProps = {};
 type StateProps = {
@@ -25,9 +26,13 @@ class ConnectedChat extends PureComponent<ChatProps> {
 
     return (
       <div className={bem()}>
-        {chatIds.map((chatId) => {
-          return <DialogPreview key={chatId} chatId={chatId} />;
-        })}
+        <div className={bem("dialogs")}>
+          {chatIds.map((chatId) => {
+            return <DialogPreview key={chatId} chatId={chatId} />;
+          })}
+        </div>
+
+        <div className={bem("body")} />
       </div>
     );
   }

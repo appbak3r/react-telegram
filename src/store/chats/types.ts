@@ -17,4 +17,5 @@ export type Chat = {
   title?: string;
   unread_count: number;
   unread_mention_count: number;
+  last_message: any;
 };

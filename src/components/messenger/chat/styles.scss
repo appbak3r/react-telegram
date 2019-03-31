@@ -1,0 +1,11 @@
+.rt-chat {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: 100%;
+
+  &__dialogs {
+    overflow: hidden;
+    overflow-y: auto;
+  }
+}

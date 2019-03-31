@@ -54,6 +54,7 @@
     "react-dom": "^16.7.0",
     "react-final-form": "^4.0.2",
     "react-helmet": "^5.2.0",
+    "react-infinite-scroll-component": "^4.5.2",
     "react-input-mask": "^2.0.4",
     "react-intl": "^2.7.2",
     "react-phone-number-input": "^2.3.10",

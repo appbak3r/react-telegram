@@ -1,8 +1,8 @@
 import { environment } from "../config/environment";
-
+import EventEmitter from "eventemitter3";
 import { TELEGRAM_CLIENT_RECEIVE, TelegramClient } from "./TelegramClient";
 
-importScripts(`${process.env.PUBLIC_URL}/td_wasm/td_wasm.js`);
+importScripts(`${process.env.PUBLIC_URL}/td_wasm.js`);
 
 /**
  * TDLib WASM loader
@@ -30,16 +30,24 @@ const debouncedSave = (() => {
   };
 })();
 
-(self as any).Module().then((tdWASM: any) => {
-  let startInterval: number;
+const TDModule = (self as any).Module();
+const DbEventEmitter = new EventEmitter();
 
-  startInterval = self.setInterval(() => {
-    if (!(self as any).syncdone) {
-      return;
+TDModule.preRun.push(() => {
+  TDModule.FS.mkdir("/telegram_data");
+  TDModule.FS.mount(TDModule.FS.filesystems.IDBFS, {}, "/telegram_data");
+
+  TDModule.FS.syncfs(true, (error: any) => {
+    if (error) {
+      throw error;
     }
 
-    self.clearInterval(startInterval);
+    DbEventEmitter.emit("ready");
+  });
+});
 
+TDModule.then((tdWASM: any) => {
+  DbEventEmitter.on("ready", () => {
     const telegramClient = new TelegramClient(tdWASM, {
       apiId: environment.apiId,
       apiHash: environment.apiHash
@@ -66,5 +74,5 @@ const debouncedSave = (() => {
         }
       }
     };
-  }, 500);
+  });
 });

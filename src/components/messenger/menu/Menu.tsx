@@ -1,6 +1,7 @@
 import block from "bem-cn";
 import React, { PureComponent } from "react";
 import { NavLink } from "react-router-dom";
+import "./styles.scss";
 
 export class Menu extends PureComponent {
   render() {
@@ -8,9 +9,11 @@ export class Menu extends PureComponent {
 
     return (
       <div className={bem()}>
-        <NavLink to={"/"}>Chat</NavLink>
+        <div className={bem("items")}>
+          <NavLink to={"/"}>Chat</NavLink>
 
-        <NavLink to={"/settings"}>Settings</NavLink>
+          <NavLink to={"/settings"}>Settings</NavLink>
+        </div>
       </div>
     );
   }

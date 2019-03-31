@@ -1,0 +1,14 @@
+@import "~styles/base/variables";
+
+.rt-menu {
+  background-color: var(--theme-color-white);
+  display: grid;
+  align-items: center;
+  justify-content: center;
+
+  &__items {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-row-gap: $grid-offset-step * 2;
+  }
+}

@@ -9,6 +9,7 @@ import { GetChatsAction } from "../../../store/chats/actions";
 import { Chat } from "../../messenger/chat/Chat";
 import { Menu } from "../../messenger/menu/Menu";
 import { Settings } from "../../messenger/settings/Settings";
+import "./styles.scss";
 
 type OwnProps = {};
 type DispatchProps = {
