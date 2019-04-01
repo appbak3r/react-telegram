@@ -2,15 +2,13 @@ import React, { ComponentClass } from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { HashRouter } from "react-router-dom";
-
 import { App } from "./App";
 import {
   ConnectedIntlProvider,
   TextComponent
 } from "./components/common/connected-intl-provider/ConnectedIntlProvider";
-
+import * as serviceWorker from "./serviceWorker";
 import { configureStore } from "./store/configureStore";
-
 import { enableTabMode } from "./utils/enableTabMode";
 
 const rootElement = document.getElementById("root");
@@ -40,3 +38,4 @@ if ((module as any).hot) {
 }
 
 enableTabMode();
+serviceWorker.register();
