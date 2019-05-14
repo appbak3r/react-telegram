@@ -1,9 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Redirect, Route, RouteProps } from "react-router-dom";
-
-import { AppLoading } from "./app-loading/AppLoading";
 import { RootState } from "../../store/reducer";
+import { AppLoading } from "./app-loading/AppLoading";
 
 const mapStateToProps = (state: RootState) => {
   return state;

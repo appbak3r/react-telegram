@@ -8,6 +8,7 @@ import { Chat } from "../../../../store/chats/types";
 import { RootState } from "../../../../store/reducer";
 import "./styles.scss";
 import { LastMessage } from "../last-message/LastMessage";
+import { Photo } from "../../photo/Photo";
 
 type OwnProps = {
   chatId: number;
@@ -47,11 +48,13 @@ class ConnectedDialogPreview extends PureComponent<DialogPreviewProps> {
 
     const { chat } = this.props;
 
-    const { title, unread_count, last_message } = chat || ({} as any);
+    const { title, unread_count, last_message, photo } = chat || ({} as any);
 
     return (
       <div className={bem()}>
-        <div className={bem("photo")} />
+        {photo && (
+          <Photo photo={photo.small} name={title} className={bem("photo")} />
+        )}
 
         <div className={bem("title")}>{title}</div>
 

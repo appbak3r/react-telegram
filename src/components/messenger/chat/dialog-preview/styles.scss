@@ -5,6 +5,24 @@
   padding: $grid-offset-step * 2;
   border-bottom: 1px solid var(--theme-color-gray);
   position: relative;
+  grid-template-columns: 50px 1fr;
+  grid-template-areas: "photo title" "photo message";
+  grid-column-gap: $grid-offset-step * 2;
+
+  &__photo {
+    grid-area: photo;
+    height: 50px;
+  }
+
+  &__title {
+    grid-area: title;
+  }
+
+  &__message {
+    grid-area: message;
+    text-overflow: ellipsis;
+    font-size: 14px;
+  }
 
   &__unread {
     background-color: var(--theme-color-primary);

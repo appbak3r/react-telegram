@@ -16,14 +16,10 @@ const debouncedSave = (() => {
       self.clearTimeout(timeout);
     }
 
-    console.log("Syncing...");
-
     timeout = self.setTimeout(() => {
       FS.syncfs(false, function(err: any) {
         if (err) {
-          console.log(err);
-        } else {
-          console.log("Synced!");
+          console.error(err);
         }
       });
     }, 500);
@@ -55,6 +51,22 @@ TDModule.then((tdWASM: any) => {
 
     telegramClient.addListener(TELEGRAM_CLIENT_RECEIVE, (message: any) => {
       debouncedSave(tdWASM.FS);
+
+      if (message["@type"] === "file") {
+        if (message.local.path) {
+          message.local.url = URL.createObjectURL(
+            new Blob([tdWASM.FS.readFile(message.local.path)])
+          );
+        }
+      }
+
+      if (message["@type"] === "updateFile") {
+        if (message.file.local.path) {
+          message.file.local.url = URL.createObjectURL(
+            new Blob([tdWASM.FS.readFile(message.file.local.path)])
+          );
+        }
+      }
 
       postMessage(message);
     });

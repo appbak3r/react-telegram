@@ -1,0 +1,9 @@
+.rt-photo {
+  border-radius: 50%;
+  overflow: hidden;
+
+  &__image {
+    width: 100%;
+    height: 100%;
+  }
+}

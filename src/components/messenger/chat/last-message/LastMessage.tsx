@@ -8,8 +8,17 @@ type OwnProps = {
 export class LastMessage extends PureComponent<OwnProps> {
   private getContent(): string {
     const { message } = this.props;
+    console.log(message);
 
-    return message.content.text ? message.content.text.text : "not text";
+    if (message.content.text) {
+      if (message.content.text.text.length > 65) {
+        return message.content.text.text.slice(0, 65) + "...";
+      } else {
+        return message.content.text.text;
+      }
+    } else {
+      return "not text";
+    }
   }
 
   render() {

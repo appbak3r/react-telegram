@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { ChatsState } from "../../../store/chats/reducer";
 import { RootState } from "../../../store/reducer";
 import { DialogPreview } from "./dialog-preview/DialogPreview";
+import InfiniteScroll from "react-infinite-scroll-component";
 import "./styles.scss";
 
 type OwnProps = {};
@@ -26,11 +27,15 @@ class ConnectedChat extends PureComponent<ChatProps> {
 
     return (
       <div className={bem()}>
-        <div className={bem("dialogs")}>
+        <InfiniteScroll
+          dataLength={chatIds.length}
+          hasMore={false}
+          loader={() => {}}
+          next={() => {}}>
           {chatIds.map((chatId) => {
             return <DialogPreview key={chatId} chatId={chatId} />;
           })}
-        </div>
+        </InfiniteScroll>
 
         <div className={bem("body")} />
       </div>

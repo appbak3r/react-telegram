@@ -56,6 +56,7 @@ export const chatsReducer = (
       switch (message["@type"]) {
         case TELEGRAM_MESSAGE_TYPES.UPDATE_CHAT_READ_INBOX: {
           let { chats } = state;
+
           const chat = chats.get(message.chat_id);
 
           if (chat) {
@@ -65,6 +66,25 @@ export const chatsReducer = (
             };
 
             chats.set(newChat.id, newChat);
+
+            chats = new Map(chats);
+          }
+
+          return {
+            ...state,
+            chats
+          };
+        }
+
+        case "updateChatPhoto": {
+          let { chats } = state;
+
+          const chat = chats.get(message.chat_id);
+
+          if (chat) {
+            chat.photo = message.photo;
+
+            chats.set(chat.id, chat);
 
             chats = new Map(chats);
           }

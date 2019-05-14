@@ -1,3 +1,5 @@
+import { IPhoto } from "../files/types";
+
 export const GET_CHATS = "@rt/chats/get/fetching";
 export const GET_CHATS_SUCCESS = "@rt/chats/get/success";
 export const GET_CHATS_FAILURE = "@rt/chats/get/failure";
@@ -14,8 +16,9 @@ export type GetChatsParams = {
 
 export type Chat = {
   id: number;
-  title?: string;
+  title: string;
   unread_count: number;
   unread_mention_count: number;
   last_message: any;
+  photo: IPhoto;
 };
