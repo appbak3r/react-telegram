@@ -1,1 +1,0 @@
-export const LONG_MAX_VALUE = "9223372036854775807";
