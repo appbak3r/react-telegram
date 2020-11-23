@@ -1,6 +1,7 @@
 {
   "name": "react-telegram",
   "version": "0.1.0",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@babel/core": "7.1.6",
