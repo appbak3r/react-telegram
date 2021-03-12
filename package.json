@@ -51,7 +51,7 @@
     "postcss-safe-parser": "4.0.1",
     "react": "^16.7.0",
     "react-app-polyfill": "^0.2.0",
-    "react-dev-utils": "^7.0.1",
+    "react-dev-utils": "^11.0.4",
     "react-dom": "^16.7.0",
     "react-final-form": "^4.0.2",
     "react-helmet": "^5.2.0",
